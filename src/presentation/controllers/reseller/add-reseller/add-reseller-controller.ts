@@ -1,11 +1,11 @@
-import { HttpRequest, HttpResponse } from '../../../protocols/http'
-import { Controller } from '../../../protocols/controller'
-import { Validation } from '../../../protocols/validation'
+import { HttpRequest, HttpResponse, Controller, Validation } from './add-reseller-controller-protocols'
 import { badRequest } from '../../../helpers/http/http-helper'
+import { AddReseller } from '../../../../domain/usecases/reseller/add-reseller'
 
 export class AddResellerController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addReseller: AddReseller
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -13,6 +13,13 @@ export class AddResellerController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    const { socialSecurityNumber, name, email, password } = httpRequest.body
+    await this.addReseller.add({
+      socialSecurityNumber,
+      name,
+      email,
+      password
+    })
     return Promise.resolve(null)
   }
 }
