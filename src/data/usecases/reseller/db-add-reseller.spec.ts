@@ -38,4 +38,11 @@ describe('DbAddReseller Usecase', () => {
     await sut.add(makeFakeResellerData())
     expect(hashSpy).toHaveBeenCalledWith('any_password')
   })
+
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherStub } = makeSut()
+    jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeResellerData())
+    await expect(promise).rejects.toThrow()
+  })
 })
