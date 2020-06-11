@@ -1,6 +1,6 @@
 import { AddResellerController } from './add-reseller-controller'
 import { HttpRequest, Validation, AddReseller, AddResellerModel, ResellerModel } from './add-reseller-controller-protocols'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
 import { MissingParamError, ServerError } from '../../../errors'
 
 const makeValidation = (): Validation => {
@@ -91,5 +91,11 @@ describe('AddReseller Controller', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(created(makeFakeReseller()))
   })
 })
