@@ -1,0 +1,26 @@
+{
+  "name": "boticario-challenge",
+  "version": "0.0.0",
+  "description": "Desafio desenvolvedor backend Grupo Boticário",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdrianoDeSiqueira/boticario-challenge.git"
+  },
+  "keywords": [
+    "express",
+    "mongodb",
+    "typescript",
+    "tdd",
+    "solid"
+  ],
+  "author": "Adriano Siqueira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdrianoDeSiqueira/boticario-challenge/issues"
+  },
+  "homepage": "https://github.com/AdrianoDeSiqueira/boticario-challenge#readme"
+}
