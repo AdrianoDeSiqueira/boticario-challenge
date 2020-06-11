@@ -13,20 +13,20 @@ const makeHasher = (): Hasher => {
 const makeAddResellerRepository = (): AddResellerRepository => {
   class AddResellerRepositoryStub implements AddResellerRepository {
     async add (resellerData: AddResellerModel): Promise<ResellerModel> {
-      return Promise.resolve(makeFakeResellerData())
+      return Promise.resolve(makeFakeReseller())
     }
   }
   return new AddResellerRepositoryStub()
 }
 
-const makeFakeReseller = (): AddResellerModel => ({
+const makeFakeResellerData = (): AddResellerModel => ({
   socialSecurityNumber: 'any_social_security_number',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'
 })
 
-const makeFakeResellerData = (): ResellerModel => ({
+const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
   socialSecurityNumber: 'any_social_security_number',
   name: 'any_name',
@@ -55,21 +55,21 @@ describe('DbAddReseller Usecase', () => {
   test('Should call Hasher with correct password', async () => {
     const { sut, hasherStub } = makeSut()
     const hashSpy = jest.spyOn(hasherStub, 'hash')
-    await sut.add(makeFakeReseller())
+    await sut.add(makeFakeResellerData())
     expect(hashSpy).toHaveBeenCalledWith('any_password')
   })
 
   test('Should throw if Hasher throws', async () => {
     const { sut, hasherStub } = makeSut()
     jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(Error()))
-    const promise = sut.add(makeFakeReseller())
+    const promise = sut.add(makeFakeResellerData())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call AddResellerRepository with correct values', async () => {
     const { sut, addResellerRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addResellerRepositoryStub, 'add')
-    await sut.add(makeFakeReseller())
+    await sut.add(makeFakeResellerData())
     expect(addSpy).toHaveBeenCalledWith({
       socialSecurityNumber: 'any_social_security_number',
       name: 'any_name',
@@ -81,7 +81,13 @@ describe('DbAddReseller Usecase', () => {
   test('Should throw if AddResellerRepository throws', async () => {
     const { sut, addResellerRepositoryStub } = makeSut()
     jest.spyOn(addResellerRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(Error()))
-    const promise = sut.add(makeFakeReseller())
+    const promise = sut.add(makeFakeResellerData())
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an reseller on success', async () => {
+    const { sut } = makeSut()
+    const reseller = await sut.add(makeFakeResellerData())
+    expect(reseller).toEqual(makeFakeReseller())
   })
 })
