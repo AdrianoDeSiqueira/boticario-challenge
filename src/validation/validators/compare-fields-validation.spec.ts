@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { CompareFieldsValidation } from './compare-fields-validation'
+import { CompareFieldsValidation } from './index'
 import { InvalidParamError } from '../../presentation/errors/invalid-param-error'
 
 describe('CompareFields Validation', () => {

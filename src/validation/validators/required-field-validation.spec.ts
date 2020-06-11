@@ -1,5 +1,5 @@
 import faker from 'faker'
-import { RequiredFieldValidation } from './required-field-validation'
+import { RequiredFieldValidation } from './index'
 import { MissingParamError } from '../../presentation/errors/missing-param-error'
 
 const field = faker.random.word()
