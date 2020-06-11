@@ -87,7 +87,7 @@ describe('AddReseller Controller', () => {
   test('Should return 500 if AddReseller throws', async () => {
     const { sut, addResellerStub } = makeSut()
     jest.spyOn(addResellerStub, 'add').mockImplementationOnce(async () => {
-      return new Promise((resolve, reject) => reject(new Error()))
+      return Promise.reject(Error())
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
