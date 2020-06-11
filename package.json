@@ -4,7 +4,10 @@
   "description": "Desafio desenvolvedor backend Grupo Boticário",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:verbose": "jest --passWithNoTests",
+    "test:staged": "npm test -- -o",
+    "test:ci": "npm test"
   },
   "repository": {
     "type": "git",
