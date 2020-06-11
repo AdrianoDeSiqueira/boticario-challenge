@@ -8,7 +8,7 @@ export class DbAddReseller implements AddReseller {
 
   async add (resellerData: AddResellerModel): Promise<ResellerModel> {
     const hashedPassword = await this.hasher.hash(resellerData.password)
-    await this.addResellerRepository.add(Object.assign({}, resellerData, { password: hashedPassword }))
-    return null
+    const reseller = await this.addResellerRepository.add(Object.assign({}, resellerData, { password: hashedPassword }))
+    return reseller
   }
 }
