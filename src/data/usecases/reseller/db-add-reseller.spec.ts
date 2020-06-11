@@ -77,4 +77,11 @@ describe('DbAddReseller Usecase', () => {
       password: 'any_password_hashed'
     })
   })
+
+  test('Should throw if AddResellerRepository throws', async () => {
+    const { sut, addResellerRepositoryStub } = makeSut()
+    jest.spyOn(addResellerRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeReseller())
+    await expect(promise).rejects.toThrow()
+  })
 })
