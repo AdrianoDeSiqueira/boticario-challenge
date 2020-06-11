@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/AdrianoDeSiqueira/boticario-challenge/issues"
   },
-  "homepage": "https://github.com/AdrianoDeSiqueira/boticario-challenge#readme"
+  "homepage": "https://github.com/AdrianoDeSiqueira/boticario-challenge#readme",
+  "devDependencies": {
+    "git-commit-msg-linter": "^2.4.2"
+  }
 }
