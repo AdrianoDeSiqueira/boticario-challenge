@@ -1,12 +1,14 @@
-import { AddOrder, AddOrderModel, OrderModel, Status } from './db-add-order-protocols'
+import { AddOrder, AddOrderModel, OrderModel, Status, AddOrderRepository } from './db-add-order-protocols'
 
 export class DbAddOrder implements AddOrder {
   constructor (
-    private readonly status: Status
+    private readonly status: Status,
+    private readonly addOrderRepository: AddOrderRepository
   ) {}
 
   async add (orderData: AddOrderModel): Promise<OrderModel> {
-    await this.status.get(orderData.socialSecurityNumber)
+    const status = await this.status.get(orderData.socialSecurityNumber)
+    await this.addOrderRepository.add(Object.assign({}, orderData, { status: status }))
     return null
   }
 }
