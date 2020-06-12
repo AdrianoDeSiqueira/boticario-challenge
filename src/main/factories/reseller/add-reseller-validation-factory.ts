@@ -2,7 +2,7 @@ import { ValidationComposite, CompareFieldsValidation, EmailValidation, Required
 import { Validation } from '../../../presentation/protocols/validation'
 import { EmailValidatorAdapter } from '../../../infra/validators/email-validator-adapter'
 
-export const makeSignUpValidation = (): ValidationComposite => {
+export const makeAddResellerValidation = (): ValidationComposite => {
   const validations: Validation[] = []
   for (const field of ['socialSecurityNumber', 'name', 'email', 'password', 'passwordConfirmation']) {
     validations.push(new RequiredFieldValidation(field))

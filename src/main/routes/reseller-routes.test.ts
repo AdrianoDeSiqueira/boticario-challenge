@@ -19,10 +19,10 @@ describe('Reseller Routes', () => {
     await resellerCollection.deleteMany({})
   })
 
-  describe('POST /signup', () => {
-    test('Should return 200 on signup', async () => {
+  describe('POST /reseller', () => {
+    test('Should return 200 on add reseller', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/api/reseller')
         .send({
           socialSecurityNumber: 'any_social_security_number',
           name: 'any_name',
@@ -33,9 +33,9 @@ describe('Reseller Routes', () => {
         .expect(201)
     })
 
-    test('Should return 400 on signup', async () => {
+    test('Should return 400 on add reseller', async () => {
       await request(app)
-        .post('/api/signup')
+        .post('/api/reseller')
         .send({
           name: 'any_name',
           email: 'any_email@mail.com',
