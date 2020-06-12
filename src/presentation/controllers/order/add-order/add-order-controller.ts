@@ -1,9 +1,10 @@
-import { HttpRequest, HttpResponse, Controller, Validation } from './add-order-controller-protocols'
+import { HttpRequest, HttpResponse, Controller, Validation, AddOrder } from './add-order-controller-protocols'
 import { badRequest } from '../../../helpers/http/http-helper'
 
 export class AddOrderController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addOrder: AddOrder
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -11,6 +12,13 @@ export class AddOrderController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    const { code, value, date, socialSecurityNumber } = httpRequest.body
+    await this.addOrder.add({
+      code,
+      value,
+      date,
+      socialSecurityNumber
+    })
     return Promise.resolve(null)
   }
 }
