@@ -32,5 +32,17 @@ describe('Reseller Routes', () => {
         })
         .expect(201)
     })
+
+    test('Should return 400 on signup', async () => {
+      await request(app)
+        .post('/api/signup')
+        .send({
+          name: 'any_name',
+          email: 'any_email@mail.com',
+          password: 'any_password',
+          passwordConfirmation: 'any_password'
+        })
+        .expect(400)
+    })
   })
 })
