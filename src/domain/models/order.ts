@@ -4,4 +4,5 @@ export type OrderModel = {
   value: string
   date: string
   socialSecurityNumber: string
+  status: string
 }

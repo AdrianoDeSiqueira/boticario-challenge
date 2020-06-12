@@ -28,7 +28,8 @@ describe('Order Mongo Repository', () => {
       code: 'any_code',
       value: 'any_value',
       date: 'any_date',
-      socialSecurityNumber: 'any_social_security_number'
+      socialSecurityNumber: 'any_social_security_number',
+      status: 'any_status'
     })
     expect(reseller).toBeTruthy()
     expect(reseller.id).toBeTruthy()
@@ -36,5 +37,6 @@ describe('Order Mongo Repository', () => {
     expect(reseller.value).toBe('any_value')
     expect(reseller.date).toBe('any_date')
     expect(reseller.socialSecurityNumber).toBe('any_social_security_number')
+    expect(reseller.status).toBe('any_status')
   })
 })

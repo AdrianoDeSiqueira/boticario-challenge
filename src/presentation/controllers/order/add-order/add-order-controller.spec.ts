@@ -35,7 +35,8 @@ const makeFakeOrder = (): OrderModel => ({
   code: 'any_code',
   value: 'any_value',
   date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number'
+  socialSecurityNumber: 'any_social_security_number',
+  status: 'any_status'
 })
 
 interface SutTypes {
