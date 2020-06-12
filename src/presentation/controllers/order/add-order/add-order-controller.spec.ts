@@ -1,5 +1,5 @@
 import { AddOrderController } from './add-order-controller'
-import { HttpRequest, Validation } from './add-order-controller-protocols'
+import { HttpRequest, Validation, AddOrder, AddOrderModel, OrderModel } from './add-order-controller-protocols'
 import { badRequest } from '../../../helpers/http/http-helper'
 import { MissingParamError } from '../../../errors'
 
@@ -12,6 +12,15 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddOrder = (): AddOrder => {
+  class AddOrderStub implements AddOrder {
+    async add (order: AddOrderModel): Promise<OrderModel> {
+      return Promise.resolve(makeFakeOrder())
+    }
+  }
+  return new AddOrderStub()
+}
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     code: 'any_code',
@@ -21,17 +30,28 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
+const makeFakeOrder = (): OrderModel => ({
+  id: 'any_id',
+  code: 'any_code',
+  value: 'any_value',
+  date: 'any_date',
+  socialSecurityNumber: 'any_social_security_number'
+})
+
 interface SutTypes {
   sut: AddOrderController
   validationStub: Validation
+  addOrderStub: AddOrder
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new AddOrderController(validationStub)
+  const addOrderStub = makeAddOrder()
+  const sut = new AddOrderController(validationStub, addOrderStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addOrderStub
   }
 }
 
@@ -49,5 +69,17 @@ describe('AddOrder Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')))
+  })
+
+  test('Should call AddOrder with correct values', async () => {
+    const { sut, addOrderStub } = makeSut()
+    const addSpy = jest.spyOn(addOrderStub, 'add')
+    await sut.handle(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith({
+      code: 'any_code',
+      value: 'any_value',
+      date: 'any_date',
+      socialSecurityNumber: 'any_social_security_number'
+    })
   })
 })
