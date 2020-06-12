@@ -38,4 +38,11 @@ describe('DbAddOrder Usecase', () => {
     await sut.add(makeFakeOrderData())
     expect(getSpy).toHaveBeenCalledWith('any_social_security_number')
   })
+
+  test('Should throw if Status throws', async () => {
+    const { sut, statusStub } = makeSut()
+    jest.spyOn(statusStub, 'get').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeOrderData())
+    await expect(promise).rejects.toThrow()
+  })
 })
