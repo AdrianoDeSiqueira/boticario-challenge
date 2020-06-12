@@ -86,4 +86,10 @@ describe('DbAddOrder Usecase', () => {
     const promise = sut.add(makeFakeOrderData())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an order on success', async () => {
+    const { sut } = makeSut()
+    const order = await sut.add(makeFakeOrderData())
+    expect(order).toEqual(makeFakeOrder())
+  })
 })
