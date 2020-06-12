@@ -79,4 +79,11 @@ describe('DbAddOrder Usecase', () => {
       status: 'any_status'
     })
   })
+
+  test('Should throw if AddOrderRepository throws', async () => {
+    const { sut, addOrderRepositoryStub } = makeSut()
+    jest.spyOn(addOrderRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeOrderData())
+    await expect(promise).rejects.toThrow()
+  })
 })
