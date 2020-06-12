@@ -1,7 +1,7 @@
 import { AddOrderController } from './add-order-controller'
 import { HttpRequest, Validation, AddOrder, AddOrderModel, OrderModel } from './add-order-controller-protocols'
-import { badRequest } from '../../../helpers/http/http-helper'
-import { MissingParamError } from '../../../errors'
+import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { MissingParamError, ServerError } from '../../../errors'
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -81,5 +81,14 @@ describe('AddOrder Controller', () => {
       date: 'any_date',
       socialSecurityNumber: 'any_social_security_number'
     })
+  })
+
+  test('Should return 500 if AddOrder throws', async () => {
+    const { sut, addOrderStub } = makeSut()
+    jest.spyOn(addOrderStub, 'add').mockImplementationOnce(async () => {
+      return Promise.reject(Error())
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
