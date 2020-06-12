@@ -1,6 +1,6 @@
 import { AddOrderController } from './add-order-controller'
 import { HttpRequest, Validation, AddOrder, AddOrderModel, OrderModel } from './add-order-controller-protocols'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
 import { MissingParamError, ServerError } from '../../../errors'
 
 const makeValidation = (): Validation => {
@@ -90,5 +90,11 @@ describe('AddOrder Controller', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(created(makeFakeOrder()))
   })
 })
