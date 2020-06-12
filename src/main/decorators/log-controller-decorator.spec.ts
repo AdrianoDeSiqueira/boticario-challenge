@@ -1,6 +1,6 @@
 import { LogControllerDecorator } from './log-controller-decorator'
 import { Controller, HttpRequest, HttpResponse } from '../../presentation/protocols'
-import { created } from '../../presentation/helpers/http/http-helper'
+import { created, serverError } from '../../presentation/helpers/http/http-helper'
 import { LogErrorRepository } from '../../data/protocols/db/log/log-error-repository'
 import { ResellerModel } from '../../domain/models/reseller'
 
@@ -40,6 +40,12 @@ const makeFakeRequest = (): HttpRequest => ({
   }
 })
 
+const makeServerError = (): HttpResponse => {
+  const fakeError = new Error()
+  fakeError.stack = 'any_stack'
+  return serverError(fakeError)
+}
+
 interface SutTypes {
   sut: LogControllerDecorator
   controllerStub: Controller
@@ -69,5 +75,13 @@ describe('LogController Decorator', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(created(makeFakeReseller()))
+  })
+
+  test('Should call LogErrorRepository with correct error if controller returns a server error', async () => {
+    const { sut, controllerStub, logErrorRepositoryStub } = makeSut()
+    const logSpy = jest.spyOn(logErrorRepositoryStub, 'logError')
+    jest.spyOn(controllerStub, 'handle').mockReturnValueOnce(Promise.resolve(makeServerError()))
+    await sut.handle(makeFakeRequest())
+    expect(logSpy).toHaveBeenCalledWith('any_stack')
   })
 })
