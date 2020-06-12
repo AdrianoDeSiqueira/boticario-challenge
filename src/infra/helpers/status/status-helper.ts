@@ -1,6 +1,6 @@
-import { Status } from '../../../data/protocols/condition/status'
+import { Status } from '../../../data/protocols/helpers/status/status'
 
-export class StatusAdapter implements Status {
+export class StatusHelper implements Status {
   constructor (private readonly specificSocialSecurityNumber: string) {}
 
   async get (socialSecurityNumber: string): Promise<string> {

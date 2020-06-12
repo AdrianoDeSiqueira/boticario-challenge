@@ -1,12 +1,12 @@
-import { StatusAdapter } from './status-adapter'
+import { StatusHelper } from './status-helper'
 
 const specificSocialSecurityNumber: string = 'specific_social_security_number'
 
-const makeSut = (): StatusAdapter => {
-  return new StatusAdapter(specificSocialSecurityNumber)
+const makeSut = (): StatusHelper => {
+  return new StatusHelper(specificSocialSecurityNumber)
 }
 
-describe('Status Adapter', () => {
+describe('Status Helper', () => {
   test('Should return "Em validação" for social security number', async () => {
     const sut = makeSut()
     const status = await sut.get('any_social_security_number')
