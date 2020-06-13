@@ -1,6 +1,6 @@
 import { LoginResellerController } from './login-reseller-controller'
 import { HttpRequest, Validation, Authentication, AuthenticationParams, AuthenticationModel } from './login-reseller-controller-protocols'
-import { badRequest, unauthorized } from '../../../helpers/http/http-helper'
+import { badRequest, unauthorized, serverError } from '../../../helpers/http/http-helper'
 import { MissingParamError } from '../../../errors'
 
 const makeValidation = (): Validation => {
@@ -78,5 +78,14 @@ describe('LoginReseller Controller', () => {
     jest.spyOn(authenticationStub, 'auth').mockReturnValueOnce(Promise.resolve(null))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(unauthorized())
+  })
+
+  test('Should return 500 if Authentications throws', async () => {
+    const { sut, authenticationStub } = makeSut()
+    jest.spyOn(authenticationStub, 'auth').mockImplementationOnce(async () => {
+      return Promise.reject(new Error())
+    })
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(serverError(new Error()))
   })
 })
