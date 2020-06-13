@@ -1,5 +1,5 @@
 import { DbAuthentication } from './db-authentication'
-import { AuthenticationParams, LoadAccountByEmailRepository, HashComparer } from './db-authentication-protocols'
+import { AuthenticationParams, LoadAccountByEmailRepository, HashComparer, Encrypter } from './db-authentication-protocols'
 import { ResellerModel } from '../../../domain/models/reseller'
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
@@ -20,6 +20,15 @@ const makeHashComparer = (): HashComparer => {
   return new HashComparerStub()
 }
 
+const makeEncrypter = (): Encrypter => {
+  class EncrypterStub implements Encrypter {
+    async encrypt (value: string): Promise<string> {
+      return Promise.resolve('any_token')
+    }
+  }
+  return new EncrypterStub()
+}
+
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
   socialSecurityNumber: 'any_social_security_number',
@@ -37,19 +46,23 @@ interface sutTypes {
   sut: DbAuthentication
   loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
   hashComparerStub: HashComparer
+  encrypterStub: Encrypter
 }
 
 const makeSut = (): sutTypes => {
   const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
   const hashComparerStub = makeHashComparer()
+  const encrypterStub = makeEncrypter()
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
-    hashComparerStub
+    hashComparerStub,
+    encrypterStub
   )
   return {
     sut,
     loadAccountByEmailRepositoryStub,
-    hashComparerStub
+    hashComparerStub,
+    encrypterStub
   }
 }
 
@@ -94,5 +107,12 @@ describe('DbAuthentication Usecase', () => {
     jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.resolve(false))
     const accessToken = await sut.auth(makeFakeAuthentication())
     expect(accessToken).toBeNull()
+  })
+
+  test('Should call Encrypter with correct id', async () => {
+    const { sut, encrypterStub } = makeSut()
+    const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
+    await sut.auth(makeFakeAuthentication())
+    expect(encryptSpy).toHaveBeenCalledWith('any_id')
   })
 })
