@@ -1,5 +1,5 @@
 import { Controller, Validation, Authentication, HttpRequest, HttpResponse } from './login-reseller-controller-protocols'
-import { badRequest, unauthorized, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, unauthorized, serverError, ok } from '../../../helpers/http/http-helper'
 
 export class LoginResellerController implements Controller {
   constructor (
@@ -21,7 +21,7 @@ export class LoginResellerController implements Controller {
       if (!accessToken) {
         return unauthorized()
       }
-      return Promise.resolve(null)
+      return ok(accessToken)
     } catch (error) {
       return serverError(error)
     }
