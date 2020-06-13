@@ -5,6 +5,7 @@ export interface AddOrderModel {
   value: string
   date: string
   socialSecurityNumber: string
+  status?: string
 }
 
 export interface AddOrder {
