@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "jest --passWithNoTests",
+    "test:verbose": "jest --passWithNoTests --runInBand",
     "test:unit": "npm test -- --watch -c jest-unit-config.js",
     "test:integration": "npm test -- --watch -c jest-integration-config.js",
     "test:staged": "npm test -- -o",
@@ -46,10 +46,10 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "faker": "^4.1.0",
-    "git-commit-msg-linter": "^2.4.2",
+    "git-commit-msg-linter": "^2.4.3",
     "husky": "^4.2.5",
     "jest": "^26.0.1",
-    "lint-staged": "^10.2.9",
+    "lint-staged": "^10.2.10",
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
@@ -57,7 +57,9 @@
   "dependencies": {
     "bcrypt": "^5.0.0",
     "express": "^4.17.1",
-    "mongodb": "^3.5.8",
+    "module-alias": "^2.2.2",
+    "mongodb": "^3.5.9",
+    "nodemon": "^2.0.4",
     "validator": "^13.1.1"
   },
   "engines": {
