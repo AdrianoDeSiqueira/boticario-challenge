@@ -60,4 +60,20 @@ describe('Reseller Mongo Repository', () => {
     const reseller = await sut.loadByEmail('any_email@mail.com')
     expect(reseller).toBeFalsy()
   })
+
+  test('Should update the account accessToken on updateAccessToken success', async () => {
+    const sut = makeSut()
+    const res = await resellerCollection.insertOne({
+      socialSecurityNumber: 'any_social_security_number',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+    const fakeReseller = res.ops[0]
+    expect(fakeReseller.accessToken).toBeFalsy()
+    await sut.updateAccessToken(fakeReseller._id, 'any_token')
+    const reseller = await resellerCollection.findOne({ _id: fakeReseller._id })
+    expect(reseller).toBeTruthy()
+    expect(reseller.accessToken).toBe('any_token')
+  })
 })
