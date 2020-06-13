@@ -59,5 +59,11 @@
     "express": "^4.17.1",
     "mongodb": "^3.5.8",
     "validator": "^13.1.1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "_moduleAliases": {
+    "@": "dist"
   }
 }
