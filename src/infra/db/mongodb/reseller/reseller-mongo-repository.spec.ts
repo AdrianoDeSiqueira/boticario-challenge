@@ -37,4 +37,21 @@ describe('Reseller Mongo Repository', () => {
     expect(reseller.email).toBe('any_email@mail.com')
     expect(reseller.password).toBe('any_password')
   })
+
+  test('Should return an reseller on loadByEmail success', async () => {
+    const sut = makeSut()
+    await resellerCollection.insertOne({
+      socialSecurityNumber: 'any_social_security_number',
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+    const reseller = await sut.loadByEmail('any_email@mail.com')
+    expect(reseller).toBeTruthy()
+    expect(reseller.id).toBeTruthy()
+    expect(reseller.socialSecurityNumber).toBe('any_social_security_number')
+    expect(reseller.name).toBe('any_name')
+    expect(reseller.email).toBe('any_email@mail.com')
+    expect(reseller.password).toBe('any_password')
+  })
 })
