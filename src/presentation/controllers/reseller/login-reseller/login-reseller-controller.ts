@@ -1,5 +1,5 @@
 import { Controller, Validation, Authentication, HttpRequest, HttpResponse } from './login-reseller-controller-protocols'
-import { badRequest } from '../../../helpers/http/http-helper'
+import { badRequest, unauthorized } from '../../../helpers/http/http-helper'
 
 export class LoginResellerController implements Controller {
   constructor (
@@ -13,10 +13,13 @@ export class LoginResellerController implements Controller {
       return badRequest(error)
     }
     const { email, password } = httpRequest.body
-    await this.authentication.auth({
+    const accessToken = await this.authentication.auth({
       email,
       password
     })
+    if (!accessToken) {
+      return unauthorized()
+    }
     return Promise.resolve(null)
   }
 }
