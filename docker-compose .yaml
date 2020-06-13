@@ -1,4 +1,24 @@
 version: "3.7"
-services: 
-  
+services:
   mongodb:
+    image: mongo:3
+    restart: always
+    volumes:
+      - ./data:/data/db
+    ports:
+      - 27017:27017
+  node:
+    image: node:12-alpine
+    working_dir: /usr/src/api
+    restart: always
+    command: bash -c "npm install --only=prod && npm run debug"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/boticario-challenge-api
+    volumes:
+      - ./dist/:/usr/src/api/dist/
+      - ./package.json:/usr/src/api/package.json
+    ports:
+      - 5050:5050
+      - 9222:9222
+    depends_on:
+      - mongo
