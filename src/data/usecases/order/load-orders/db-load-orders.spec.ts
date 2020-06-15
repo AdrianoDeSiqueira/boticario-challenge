@@ -49,4 +49,12 @@ describe('DbLoadOrders Usecase', () => {
     const promise = sut.load(resellerId)
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadResellerByIdRepository returns null', async () => {
+    const { sut, loadResellerByIdRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
+    const resellerId = 'any_reseller_id'
+    const reseller = await sut.load(resellerId)
+    expect(reseller).toBeNull()
+  })
 })
