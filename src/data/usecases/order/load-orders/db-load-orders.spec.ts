@@ -1,6 +1,7 @@
 import { DbLoadOrders } from './db-load-orders'
-import { LoadResellerByIdRepository } from './db-load-orders-protocols'
+import { LoadResellerByIdRepository, LoadOrdersRepository } from './db-load-orders-protocols'
 import { ResellerModel } from '../../../../domain/models/reseller'
+import { OrderModel } from '../../../../domain/models/order'
 
 const makeLoadResellerByIdRepository = (): LoadResellerByIdRepository => {
   class LoadResellerByIdRepositoryStub implements LoadResellerByIdRepository {
@@ -11,6 +12,15 @@ const makeLoadResellerByIdRepository = (): LoadResellerByIdRepository => {
   return new LoadResellerByIdRepositoryStub()
 }
 
+const makeLoadOrdersRepository = (): LoadOrdersRepository => {
+  class LoadOrdersRepositoryStub implements LoadOrdersRepository {
+    async loadAll (socialSecurityNumber: string): Promise<OrderModel[]> {
+      return makeFakeOrderModels()
+    }
+  }
+  return new LoadOrdersRepositoryStub()
+}
+
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
   socialSecurityNumber: 'any_social_security_number',
@@ -19,17 +29,34 @@ const makeFakeReseller = (): ResellerModel => ({
   password: 'hashed_password'
 })
 
+const makeFakeOrderModels = (): OrderModel[] => [
+  makeFakeOrderModel(),
+  makeFakeOrderModel()
+]
+
+const makeFakeOrderModel = (): OrderModel => ({
+  id: 'any_id',
+  code: 'any_code',
+  value: 'any_value',
+  date: 'any_date',
+  socialSecurityNumber: 'any_social_security_number',
+  status: 'any_status'
+})
+
 type SutTypes = {
   sut: DbLoadOrders
   loadResellerByIdRepositoryStub: LoadResellerByIdRepository
+  loadOrdersRepositoryStub: LoadOrdersRepository
 }
 
 const makeSut = (): SutTypes => {
   const loadResellerByIdRepositoryStub = makeLoadResellerByIdRepository()
-  const sut = new DbLoadOrders(loadResellerByIdRepositoryStub)
+  const loadOrdersRepositoryStub = makeLoadOrdersRepository()
+  const sut = new DbLoadOrders(loadResellerByIdRepositoryStub, loadOrdersRepositoryStub)
   return {
     sut,
-    loadResellerByIdRepositoryStub
+    loadResellerByIdRepositoryStub,
+    loadOrdersRepositoryStub
   }
 }
 
@@ -56,5 +83,13 @@ describe('DbLoadOrders Usecase', () => {
     const resellerId = 'any_reseller_id'
     const reseller = await sut.load(resellerId)
     expect(reseller).toBeNull()
+  })
+
+  test('Should call LoadOrdersRepository with correct social security number', async () => {
+    const { sut, loadOrdersRepositoryStub } = makeSut()
+    const loadAllSpy = jest.spyOn(loadOrdersRepositoryStub, 'loadAll')
+    const resellerId = 'any_reseller_id'
+    await sut.load(resellerId)
+    expect(loadAllSpy).toHaveBeenCalledWith('any_social_security_number')
   })
 })
