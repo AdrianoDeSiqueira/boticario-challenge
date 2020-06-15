@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, LoadOrders } from './load-orders-controller-protocols'
-import { ok, noContent } from '../../../helpers/http/http-helper'
+import { ok, noContent, serverError } from '../../../helpers/http/http-helper'
 
 export class LoadOrdersController implements Controller {
   constructor (
@@ -7,7 +7,11 @@ export class LoadOrdersController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const orders = await this.loadOrders.load(httpRequest.resellerId)
-    return orders.length ? ok(orders) : noContent()
+    try {
+      const orders = await this.loadOrders.load(httpRequest.resellerId)
+      return orders.length ? ok(orders) : noContent()
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
