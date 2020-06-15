@@ -65,7 +65,8 @@ describe('Order Mongo Repository', () => {
     test('Should loadAll returns null', async () => {
       const sut = makeSut()
       const orders = await sut.loadAll()
-      expect(orders).toBeNull()
+      const count = orders.length
+      expect(count).toBe(0)
     })
   })
 })

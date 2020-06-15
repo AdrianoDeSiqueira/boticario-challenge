@@ -17,6 +17,6 @@ export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepos
       .sort({ date: -1 })
       .build()
     const orders = await orderCollection.aggregate(query).toArray()
-    return orders.length ? MongoHelper.mapCollection(orders) : null
+    return MongoHelper.mapCollection(orders)
   }
 }

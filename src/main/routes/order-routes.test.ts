@@ -20,7 +20,7 @@ describe('Order Routes', () => {
   })
 
   describe('POST /order', () => {
-    test('Should return 200 on add order', async () => {
+    test('Should return 201 on add order', async () => {
       await request(app)
         .post('/api/order')
         .send({
@@ -42,5 +42,27 @@ describe('Order Routes', () => {
         })
         .expect(400)
     })
+  })
+
+  describe('POST /get', () => {
+    test('Should return 200 on load orders', async () => {
+      await orderCollection.insertOne({
+        id: 'any_id',
+        code: 'any_code',
+        value: 'any_value',
+        date: 'any_date',
+        socialSecurityNumber: 'any_social_security_number',
+        status: 'any_status'
+      })
+      await request(app)
+        .get('/api/order')
+        .expect(200)
+    })
+  })
+
+  test('Should return 204 on load orders', async () => {
+    await request(app)
+      .get('/api/order')
+      .expect(204)
   })
 })
