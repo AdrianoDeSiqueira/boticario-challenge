@@ -1,7 +1,7 @@
 import { LoadOrdersController } from './load-orders-controller'
 import { HttpRequest, LoadOrders } from './load-orders-controller-protocols'
 import { OrderModel } from '../add-order/add-order-controller-protocols'
-import { ok } from '../../../helpers/http/http-helper'
+import { ok, noContent } from '../../../helpers/http/http-helper'
 
 const makeLoadOrders = (): LoadOrders => {
   class LoadOrdersStub implements LoadOrders {
@@ -57,5 +57,12 @@ describe('LoadOrders Controller', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(ok(makeFakeOrderModels()))
+  })
+
+  test('Should return 204 if LoadOrders returns empty', async () => {
+    const { sut, loadOrdersStub } = makeSut()
+    jest.spyOn(loadOrdersStub, 'load').mockReturnValueOnce(Promise.resolve([]))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
