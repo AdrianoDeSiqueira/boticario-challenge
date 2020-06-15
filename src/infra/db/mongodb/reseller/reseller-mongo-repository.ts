@@ -5,8 +5,9 @@ import { ResellerModel } from '../../../../domain/models/reseller'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/reseller/load-reseller-by-email-repository'
 import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/reseller/update-access-token-repository'
+import { LoadResellerByIdRepository } from '@/data/usecases/order/load-orders/db-load-orders-protocols'
 
-export class ResellerMongoRepository implements AddResellerRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class ResellerMongoRepository implements AddResellerRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadResellerByIdRepository {
   async add (resellerData: AddResellerModel): Promise<ResellerModel> {
     const resellerCollection = await MongoHelper.getCollection('resellers')
     const result = await resellerCollection.insertOne(resellerData)
@@ -16,6 +17,12 @@ export class ResellerMongoRepository implements AddResellerRepository, LoadAccou
   async loadByEmail (email: string): Promise<ResellerModel> {
     const resellerCollection = await MongoHelper.getCollection('resellers')
     const reseller = await resellerCollection.findOne({ email })
+    return reseller && MongoHelper.map(reseller)
+  }
+
+  async loadById (resellerId: string): Promise<ResellerModel> {
+    const resellerCollection = await MongoHelper.getCollection('resellers')
+    const reseller = await resellerCollection.findOne({ _id: resellerId })
     return reseller && MongoHelper.map(reseller)
   }
 
