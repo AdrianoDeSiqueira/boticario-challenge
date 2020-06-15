@@ -108,4 +108,11 @@ describe('DbLoadOrders Usecase', () => {
     const orders = await sut.load(resellerId)
     expect(orders).toBeNull()
   })
+
+  test('Should return a orders on success', async () => {
+    const { sut } = makeSut()
+    const resellerId = 'any_reseller_id'
+    const orders = await sut.load(resellerId)
+    expect(orders).toEqual(makeFakeOrderModels())
+  })
 })
