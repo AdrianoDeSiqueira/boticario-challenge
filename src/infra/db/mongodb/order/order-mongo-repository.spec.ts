@@ -44,7 +44,7 @@ describe('Order Mongo Repository', () => {
 
   describe('loadAll()', () => {
     test('Should loadAll orders by socialSecurityNumber on success', async () => {
-      const res = await orderCollection.insertOne({
+      await orderCollection.insertOne({
         code: 'any_code',
         value: 'any_value',
         date: 'any_date',
@@ -52,7 +52,7 @@ describe('Order Mongo Repository', () => {
         status: 'any_status'
       })
       const sut = makeSut()
-      const orders = await sut.loadAll(res.ops[0].socialSecurityNumber)
+      const orders = await sut.loadAll()
       expect(orders).toBeTruthy()
       expect(orders[0].id).toBeTruthy()
       expect(orders[0].code).toBe('any_code')
@@ -64,7 +64,7 @@ describe('Order Mongo Repository', () => {
 
     test('Should loadAll returns null', async () => {
       const sut = makeSut()
-      const orders = await sut.loadAll('any_social_security_number')
+      const orders = await sut.loadAll()
       expect(orders).toBeNull()
     })
   })

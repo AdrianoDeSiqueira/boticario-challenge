@@ -8,7 +8,7 @@ export class LoadOrdersController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const orders = await this.loadOrders.load(httpRequest.resellerId)
+      const orders = await this.loadOrders.load()
       return orders.length ? ok(orders) : noContent()
     } catch (error) {
       return serverError(error)

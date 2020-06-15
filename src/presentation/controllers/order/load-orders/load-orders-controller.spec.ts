@@ -5,7 +5,7 @@ import { OrderModel } from '@/domain/models/order'
 
 const makeLoadOrders = (): LoadOrders => {
   class LoadOrdersStub implements LoadOrders {
-    async load (resellerId: string): Promise<OrderModel[]> {
+    async load (): Promise<OrderModel[]> {
       return Promise.resolve(makeFakeOrderModels())
     }
   }
@@ -26,9 +26,7 @@ const makeFakeOrderModel = (): OrderModel => ({
   status: 'any_status'
 })
 
-const makeFakeRequest = (): HttpRequest => ({
-  resellerId: 'any_reseller_id'
-})
+const makeFakeRequest = (): HttpRequest => ({})
 
 type SutTypes = {
   sut: LoadOrdersController
@@ -45,14 +43,6 @@ const makeSut = (): SutTypes => {
 }
 
 describe('LoadOrders Controller', () => {
-  test('Should call LoadOrders with correct value', async () => {
-    const { sut, loadOrdersStub } = makeSut()
-    const loadSpy = jest.spyOn(loadOrdersStub, 'load')
-    const httpRequest = makeFakeRequest()
-    await sut.handle(httpRequest)
-    expect(loadSpy).toHaveBeenCalledWith(httpRequest.resellerId)
-  })
-
   test('Should return 200 on success', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(makeFakeRequest())

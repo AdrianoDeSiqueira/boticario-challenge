@@ -11,12 +11,10 @@ export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepos
     return MongoHelper.map(result.ops[0])
   }
 
-  async loadAll (socialSecurityNumber: string): Promise<OrderModel[]> {
+  async loadAll (): Promise<OrderModel[]> {
     const orderCollection = await MongoHelper.getCollection('orders')
     const query = new QueryBuilder()
-      .match({
-        socialSecurityNumber: socialSecurityNumber
-      })
+      .sort({ date: -1 })
       .build()
     const orders = await orderCollection.aggregate(query).toArray()
     return orders.length ? MongoHelper.mapCollection(orders) : null

@@ -1,32 +1,14 @@
 import { DbLoadOrders } from './db-load-orders'
-import { LoadResellerByIdRepository, LoadOrdersRepository, OrderModel } from './db-load-orders-protocols'
-import { ResellerModel } from '@/domain/models/reseller'
-
-const makeLoadResellerByIdRepository = (): LoadResellerByIdRepository => {
-  class LoadResellerByIdRepositoryStub implements LoadResellerByIdRepository {
-    async loadById (id: string): Promise<ResellerModel> {
-      return makeFakeReseller()
-    }
-  }
-  return new LoadResellerByIdRepositoryStub()
-}
+import { LoadOrdersRepository, OrderModel } from './db-load-orders-protocols'
 
 const makeLoadOrdersRepository = (): LoadOrdersRepository => {
   class LoadOrdersRepositoryStub implements LoadOrdersRepository {
-    async loadAll (socialSecurityNumber: string): Promise<OrderModel[]> {
+    async loadAll (): Promise<OrderModel[]> {
       return makeFakeOrderModels()
     }
   }
   return new LoadOrdersRepositoryStub()
 }
-
-const makeFakeReseller = (): ResellerModel => ({
-  id: 'any_id',
-  socialSecurityNumber: 'any_social_security_number',
-  name: 'any_name',
-  email: 'any_email@mail.com',
-  password: 'hashed_password'
-})
 
 const makeFakeOrderModels = (): OrderModel[] => [
   makeFakeOrderModel(),
@@ -44,74 +26,36 @@ const makeFakeOrderModel = (): OrderModel => ({
 
 type SutTypes = {
   sut: DbLoadOrders
-  loadResellerByIdRepositoryStub: LoadResellerByIdRepository
   loadOrdersRepositoryStub: LoadOrdersRepository
 }
 
 const makeSut = (): SutTypes => {
-  const loadResellerByIdRepositoryStub = makeLoadResellerByIdRepository()
   const loadOrdersRepositoryStub = makeLoadOrdersRepository()
-  const sut = new DbLoadOrders(loadResellerByIdRepositoryStub, loadOrdersRepositoryStub)
+  const sut = new DbLoadOrders(loadOrdersRepositoryStub)
   return {
     sut,
-    loadResellerByIdRepositoryStub,
     loadOrdersRepositoryStub
   }
 }
 
 describe('DbLoadOrders Usecase', () => {
-  test('Should call LoadResellerByIdRepository with correct id', async () => {
-    const { sut, loadResellerByIdRepositoryStub } = makeSut()
-    const loadByIdSpy = jest.spyOn(loadResellerByIdRepositoryStub, 'loadById')
-    const resellerId = 'any_reseller_id'
-    await sut.load(resellerId)
-    expect(loadByIdSpy).toHaveBeenCalledWith(resellerId)
-  })
-
-  test('Should throw if LoadResellerByIdRepository throws', async () => {
-    const { sut, loadResellerByIdRepositoryStub } = makeSut()
-    jest.spyOn(loadResellerByIdRepositoryStub, 'loadById').mockReturnValueOnce(Promise.reject(Error()))
-    const resellerId = 'any_reseller_id'
-    const promise = sut.load(resellerId)
-    await expect(promise).rejects.toThrow()
-  })
-
-  test('Should return null if LoadResellerByIdRepository returns null', async () => {
-    const { sut, loadResellerByIdRepositoryStub } = makeSut()
-    jest.spyOn(loadResellerByIdRepositoryStub, 'loadById').mockReturnValueOnce(null)
-    const resellerId = 'any_reseller_id'
-    const reseller = await sut.load(resellerId)
-    expect(reseller).toBeNull()
-  })
-
-  test('Should call LoadOrdersRepository with correct social security number', async () => {
-    const { sut, loadOrdersRepositoryStub } = makeSut()
-    const loadAllSpy = jest.spyOn(loadOrdersRepositoryStub, 'loadAll')
-    const resellerId = 'any_reseller_id'
-    await sut.load(resellerId)
-    expect(loadAllSpy).toHaveBeenCalledWith('any_social_security_number')
-  })
-
   test('Should throw if LoadOrdersRepository throws', async () => {
     const { sut, loadOrdersRepositoryStub } = makeSut()
     jest.spyOn(loadOrdersRepositoryStub, 'loadAll').mockReturnValueOnce(Promise.reject(Error()))
-    const resellerId = 'any_reseller_id'
-    const promise = sut.load(resellerId)
+    const promise = sut.load()
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if LoadOrdersRepository returns null', async () => {
     const { sut, loadOrdersRepositoryStub } = makeSut()
     jest.spyOn(loadOrdersRepositoryStub, 'loadAll').mockReturnValueOnce(null)
-    const resellerId = 'any_reseller_id'
-    const orders = await sut.load(resellerId)
-    expect(orders).toBeNull()
+    const result = await sut.load()
+    expect(result).toBeNull()
   })
 
   test('Should return a orders on success', async () => {
     const { sut } = makeSut()
-    const resellerId = 'any_reseller_id'
-    const orders = await sut.load(resellerId)
+    const orders = await sut.load()
     expect(orders).toEqual(makeFakeOrderModels())
   })
 })

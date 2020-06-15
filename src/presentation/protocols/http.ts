@@ -5,5 +5,4 @@ export interface HttpResponse {
 
 export interface HttpRequest {
   body?: any
-  resellerId?: string
 }
