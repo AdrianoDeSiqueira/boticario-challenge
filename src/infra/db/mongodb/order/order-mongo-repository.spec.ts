@@ -61,5 +61,11 @@ describe('Order Mongo Repository', () => {
       expect(orders[0].socialSecurityNumber).toBe('any_social_security_number')
       expect(orders[0].status).toBe('any_status')
     })
+
+    test('Should loadAll returns null', async () => {
+      const sut = makeSut()
+      const orders = await sut.loadAll('any_social_security_number')
+      expect(orders).toBeNull()
+    })
   })
 })
