@@ -9,7 +9,10 @@ export class DbLoadOrders implements LoadOrders {
   async load (resellerId: string): Promise<OrderModel[]> {
     const reseller = await this.loadResellerByIdRepository.loadById(resellerId)
     if (reseller) {
-      await this.loadOrdersRepository.loadAll(reseller.socialSecurityNumber)
+      const orders = await this.loadOrdersRepository.loadAll(reseller.socialSecurityNumber)
+      if (orders) {
+        return orders
+      }
     }
     return null
   }
