@@ -5,7 +5,7 @@ import { LogMongoRepository } from '../../../../infra/db/mongodb/log/log-mongo-r
 import { LogControllerDecorator } from '../../../decorators/log-controller-decorator'
 import { makeAddOrderValidation } from './add-order-validation-factory'
 import { DbAddOrder } from '../../../../data/usecases/order/db-add-order'
-import { StatusHelper } from '../../../../infra/helpers/status/status-helper'
+import { StatusHelper } from '../../../../infra/db/mongodb/order/helpers/status-helper'
 import { OrderMongoRepository } from '../../../../infra/db/mongodb/order/order-mongo-repository'
 
 export const makeAddOrderController = (): Controller => {

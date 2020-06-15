@@ -1,8 +1,8 @@
 import { DbAddOrder } from './db-add-order'
-import { AddOrderModel, OrderModel, Status, AddOrderRepository } from './db-add-order-protocols'
+import { AddOrderModel, OrderModel, GetStatusHelper, AddOrderRepository } from './db-add-order-protocols'
 
-const makeStatus = (): Status => {
-  class StatusStub implements Status {
+const makeStatus = (): GetStatusHelper => {
+  class StatusStub implements GetStatusHelper {
     async get (socialSecurityNumber: string): Promise<string> {
       return Promise.resolve('any_status')
     }
@@ -37,7 +37,7 @@ const makeFakeOrder = (): OrderModel => ({
 
 interface sutTypes {
   sut: DbAddOrder
-  statusStub: Status
+  statusStub: GetStatusHelper
   addOrderRepositoryStub: AddOrderRepository
 }
 

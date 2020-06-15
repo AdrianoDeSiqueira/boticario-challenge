@@ -1,8 +1,8 @@
-import { AddOrder, AddOrderModel, OrderModel, Status, AddOrderRepository } from './db-add-order-protocols'
+import { AddOrder, AddOrderModel, OrderModel, GetStatusHelper, AddOrderRepository } from './db-add-order-protocols'
 
 export class DbAddOrder implements AddOrder {
   constructor (
-    private readonly status: Status,
+    private readonly status: GetStatusHelper,
     private readonly addOrderRepository: AddOrderRepository
   ) {}
 

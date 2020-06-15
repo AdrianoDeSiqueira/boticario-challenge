@@ -1,3 +1,3 @@
-export interface Status {
+export interface GetStatusHelper {
   get: (socialSecurityNumber: string) => Promise<string>
 }
