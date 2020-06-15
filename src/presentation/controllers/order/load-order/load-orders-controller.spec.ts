@@ -1,6 +1,7 @@
 import { LoadOrdersController } from './load-orders-controller'
 import { HttpRequest, LoadOrders } from './load-orders-controller-protocols'
 import { OrderModel } from '../add-order/add-order-controller-protocols'
+import { ok } from '../../../helpers/http/http-helper'
 
 const makeLoadOrders = (): LoadOrders => {
   class LoadOrdersStub implements LoadOrders {
@@ -50,5 +51,11 @@ describe('LoadOrders Controller', () => {
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
     expect(loadSpy).toHaveBeenCalledWith(httpRequest.resellerId)
+  })
+
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(ok(makeFakeOrderModels()))
   })
 })
