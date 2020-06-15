@@ -1,12 +1,12 @@
-import env from '../../../config/env'
-import { AddOrderController } from '../../../../presentation/controllers/order/add-order/add-order-controller'
-import { Controller } from '../../../../presentation/protocols'
-import { LogMongoRepository } from '../../../../infra/db/mongodb/log/log-mongo-repository'
-import { LogControllerDecorator } from '../../../decorators/log-controller-decorator'
+import env from '@/main/config/env'
+import { AddOrderController } from '@/presentation/controllers/order/add-order/add-order-controller'
+import { Controller } from '@/presentation/protocols'
+import { LogMongoRepository } from '@/infra/db/mongodb/log/log-mongo-repository'
+import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
 import { makeAddOrderValidation } from './add-order-validation-factory'
-import { DbAddOrder } from '../../../../data/usecases/order/add-order/db-add-order'
-import { StatusHelper } from '../../../../infra/db/mongodb/order/helpers/status-helper'
-import { OrderMongoRepository } from '../../../../infra/db/mongodb/order/order-mongo-repository'
+import { DbAddOrder } from '@/data/usecases/order/add-order/db-add-order'
+import { StatusHelper } from '@/infra/db/mongodb/order/helpers/status-helper'
+import { OrderMongoRepository } from '@/infra/db/mongodb/order/order-mongo-repository'
 
 export const makeAddOrderController = (): Controller => {
   const specificSocialSecurityNumber = env.specificSocialSecurityNumber

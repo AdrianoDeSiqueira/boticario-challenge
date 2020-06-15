@@ -1,7 +1,6 @@
 import { DbLoadOrders } from './db-load-orders'
-import { LoadResellerByIdRepository, LoadOrdersRepository } from './db-load-orders-protocols'
-import { ResellerModel } from '../../../../domain/models/reseller'
-import { OrderModel } from '../../../../domain/models/order'
+import { LoadResellerByIdRepository, LoadOrdersRepository, OrderModel } from './db-load-orders-protocols'
+import { ResellerModel } from '@/domain/models/reseller'
 
 const makeLoadResellerByIdRepository = (): LoadResellerByIdRepository => {
   class LoadResellerByIdRepositoryStub implements LoadResellerByIdRepository {

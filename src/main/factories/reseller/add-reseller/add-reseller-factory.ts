@@ -1,10 +1,10 @@
-import { AddResellerController } from '../../../../presentation/controllers/reseller/add-reseller/add-reseller-controller'
-import { DbAddReseller } from '../../../../data/usecases/reseller/add-reseller/db-add-reseller'
-import { BcryptAdapter } from '../../../../infra/cryptograph/bcrypt-adapter/bcrypt-adapter'
-import { ResellerMongoRepository } from '../../../../infra/db/mongodb/reseller/reseller-mongo-repository'
-import { LogMongoRepository } from '../../../../infra/db/mongodb/log/log-mongo-repository'
-import { Controller } from '../../../../presentation/protocols'
-import { LogControllerDecorator } from '../../../decorators/log-controller-decorator'
+import { AddResellerController } from '@/presentation/controllers/reseller/add-reseller/add-reseller-controller'
+import { DbAddReseller } from '@/data/usecases/reseller/add-reseller/db-add-reseller'
+import { BcryptAdapter } from '@/infra/cryptograph/bcrypt-adapter/bcrypt-adapter'
+import { ResellerMongoRepository } from '@/infra/db/mongodb/reseller/reseller-mongo-repository'
+import { LogMongoRepository } from '@/infra/db/mongodb/log/log-mongo-repository'
+import { Controller } from '@/presentation/protocols'
+import { LogControllerDecorator } from '@/main/decorators/log-controller-decorator'
 import { makeAddResellerValidation } from './add-reseller-validation-factory'
 
 export const makeAddResellerController = (): Controller => {

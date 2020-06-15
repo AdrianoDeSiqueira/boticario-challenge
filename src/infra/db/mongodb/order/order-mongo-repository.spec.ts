@@ -1,5 +1,5 @@
 import { OrderMongoRepository } from './order-mongo-repository'
-import { MongoHelper } from '../helpers'
+import { MongoHelper } from '@/infra/db/mongodb/helpers'
 import { Collection } from 'mongodb'
 
 let orderCollection: Collection

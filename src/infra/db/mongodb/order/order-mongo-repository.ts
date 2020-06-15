@@ -1,8 +1,8 @@
-import { AddOrderRepository } from '../../../../data/protocols/db/order/add-order-repository'
+import { AddOrderRepository } from '@/data/protocols/db/order/add-order-repository'
 import { LoadOrdersRepository } from '@/data/protocols/db/order/load-orders-repository'
-import { AddOrderModel } from '../../../../domain/usecases/order/add-order'
-import { OrderModel } from '../../../../domain/models/order'
-import { MongoHelper, QueryBuilder } from '../helpers'
+import { AddOrderModel } from '@/domain/usecases/order/add-order'
+import { OrderModel } from '@/domain/models/order'
+import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb/helpers'
 
 export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepository {
   async add (orderData: AddOrderModel): Promise<OrderModel> {

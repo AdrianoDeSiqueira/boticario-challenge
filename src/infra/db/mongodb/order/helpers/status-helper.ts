@@ -1,4 +1,4 @@
-import { GetStatusHelper } from '../../../../../data/protocols/db/order/helpers/get-status-helper'
+import { GetStatusHelper } from '@/data/protocols/db/order/helpers/get-status-helper'
 
 export class StatusHelper implements GetStatusHelper {
   constructor (private readonly specificSocialSecurityNumber: string) {}

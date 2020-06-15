@@ -1,4 +1,4 @@
-import { ResellerModel } from '../../models/reseller'
+import { ResellerModel } from '@/domain/models/reseller'
 
 export interface AddResellerModel {
   socialSecurityNumber: string

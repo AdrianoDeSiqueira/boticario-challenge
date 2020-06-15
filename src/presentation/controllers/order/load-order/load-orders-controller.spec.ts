@@ -1,7 +1,7 @@
 import { LoadOrdersController } from './load-orders-controller'
 import { HttpRequest, LoadOrders } from './load-orders-controller-protocols'
-import { OrderModel } from '../add-order/add-order-controller-protocols'
-import { ok, noContent, serverError } from '../../../helpers/http/http-helper'
+import { ok, noContent, serverError } from '@/presentation/helpers/http/http-helper'
+import { OrderModel } from '@/domain/models/order'
 
 const makeLoadOrders = (): LoadOrders => {
   class LoadOrdersStub implements LoadOrders {

@@ -1,7 +1,7 @@
 import { AddOrderController } from './add-order-controller'
 import { HttpRequest, Validation, AddOrder, AddOrderModel, OrderModel } from './add-order-controller-protocols'
-import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
-import { MissingParamError, ServerError } from '../../../errors'
+import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
+import { MissingParamError, ServerError } from '@/presentation/errors'
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {

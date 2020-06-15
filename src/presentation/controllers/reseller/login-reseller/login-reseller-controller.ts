@@ -1,5 +1,5 @@
 import { Controller, Validation, Authentication, HttpRequest, HttpResponse } from './login-reseller-controller-protocols'
-import { badRequest, unauthorized, serverError, ok } from '../../../helpers/http/http-helper'
+import { badRequest, unauthorized, serverError, ok } from '@/presentation/helpers/http/http-helper'
 
 export class LoginResellerController implements Controller {
   constructor (

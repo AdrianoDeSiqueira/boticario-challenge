@@ -1,5 +1,5 @@
 import { HttpRequest, HttpResponse, Controller, Validation, AddOrder } from './add-order-controller-protocols'
-import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
+import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
 
 export class AddOrderController implements Controller {
   constructor (

@@ -1,6 +1,6 @@
 import { HttpRequest, HttpResponse, Controller, Validation } from './add-reseller-controller-protocols'
-import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
-import { AddReseller } from '../../../../domain/usecases/reseller/add-reseller'
+import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
+import { AddReseller } from '@/domain/usecases/reseller/add-reseller'
 
 export class AddResellerController implements Controller {
   constructor (

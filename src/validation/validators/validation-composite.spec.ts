@@ -1,7 +1,7 @@
 import faker from 'faker'
 import { ValidationComposite } from './validation-composite'
-import { MissingParamError, InvalidParamError } from '../../presentation/errors'
-import { Validation } from '../../presentation/protocols/validation'
+import { MissingParamError, InvalidParamError } from '@/presentation/errors'
+import { Validation } from '@/presentation/protocols/validation'
 
 const field = faker.random.word()
 

@@ -1,7 +1,7 @@
 import { AddResellerController } from './add-reseller-controller'
 import { HttpRequest, Validation, AddReseller, AddResellerModel, ResellerModel } from './add-reseller-controller-protocols'
-import { badRequest, serverError, created } from '../../../helpers/http/http-helper'
-import { MissingParamError, ServerError } from '../../../errors'
+import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
+import { MissingParamError, ServerError } from '@/presentation/errors'
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {

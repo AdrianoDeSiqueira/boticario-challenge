@@ -1,4 +1,4 @@
-import { OrderModel } from '../../models/order'
+import { OrderModel } from '@/domain/models/order'
 
 export interface AddOrderModel {
   code: string

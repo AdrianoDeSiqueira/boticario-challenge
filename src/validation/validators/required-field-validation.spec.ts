@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { RequiredFieldValidation } from './index'
-import { MissingParamError } from '../../presentation/errors/missing-param-error'
+import { MissingParamError } from '@/presentation/errors/missing-param-error'
 
 const field = faker.random.word()
 

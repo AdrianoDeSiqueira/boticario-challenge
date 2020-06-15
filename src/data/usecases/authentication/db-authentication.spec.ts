@@ -1,6 +1,6 @@
 import { DbAuthentication } from './db-authentication'
 import { AuthenticationParams, LoadAccountByEmailRepository, HashComparer, Encrypter, UpdateAccessTokenRepository } from './db-authentication-protocols'
-import { ResellerModel } from '../../../domain/models/reseller'
+import { ResellerModel } from '@/domain/models/reseller'
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {

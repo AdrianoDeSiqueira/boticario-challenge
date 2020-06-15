@@ -1,10 +1,10 @@
-import { AddResellerRepository } from '../../../../data/protocols/db/reseller/add-reseller-repository'
-import { AddResellerModel } from '../../../../domain/usecases/reseller/add-reseller'
+import { AddResellerRepository } from '@/data/protocols/db/reseller/add-reseller-repository'
+import { AddResellerModel } from '@/domain/usecases/reseller/add-reseller'
 
-import { ResellerModel } from '../../../../domain/models/reseller'
-import { MongoHelper } from '../helpers/mongo-helper'
-import { LoadAccountByEmailRepository } from '../../../../data/protocols/db/reseller/load-reseller-by-email-repository'
-import { UpdateAccessTokenRepository } from '../../../../data/protocols/db/reseller/update-access-token-repository'
+import { ResellerModel } from '@/domain/models/reseller'
+import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
+import { LoadAccountByEmailRepository } from '@/data/protocols/db/reseller/load-reseller-by-email-repository'
+import { UpdateAccessTokenRepository } from '@/data/protocols/db/reseller/update-access-token-repository'
 import { LoadResellerByIdRepository } from '@/data/usecases/order/load-orders/db-load-orders-protocols'
 
 export class ResellerMongoRepository implements AddResellerRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadResellerByIdRepository {

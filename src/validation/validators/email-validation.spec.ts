@@ -1,7 +1,7 @@
 import faker from 'faker'
 import { EmailValidation } from './index'
-import { EmailValidator } from '../protocols/email-validator'
-import { InvalidParamError } from '../../presentation/errors/invalid-param-error'
+import { EmailValidator } from '@/validation/protocols/email-validator'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 
 const field = faker.random.word()
 

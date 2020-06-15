@@ -1,6 +1,6 @@
 import faker from 'faker'
 import { CompareFieldsValidation } from './index'
-import { InvalidParamError } from '../../presentation/errors/invalid-param-error'
+import { InvalidParamError } from '@/presentation/errors/invalid-param-error'
 
 describe('CompareFields Validation', () => {
   const field = faker.random.word()
