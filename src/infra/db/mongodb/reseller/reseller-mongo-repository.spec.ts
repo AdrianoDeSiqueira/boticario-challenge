@@ -65,6 +65,26 @@ describe('ResellerMongo Repository', () => {
     })
   })
 
+  describe('loadById()', () => {
+    test('Should return an reseller on loadById success', async () => {
+      const sut = makeSut()
+      const res = await resellerCollection.insertOne({
+        socialSecurityNumber: 'any_social_security_number',
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password'
+      })
+      const fakeReseller = res.ops[0]
+      const reseller = await sut.loadById(fakeReseller._id)
+      expect(reseller).toBeTruthy()
+      expect(reseller.id).toBeTruthy()
+      expect(reseller.socialSecurityNumber).toBe('any_social_security_number')
+      expect(reseller.name).toBe('any_name')
+      expect(reseller.email).toBe('any_email@mail.com')
+      expect(reseller.password).toBe('any_password')
+    })
+  })
+
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on updateAccessToken success', async () => {
       const sut = makeSut()
