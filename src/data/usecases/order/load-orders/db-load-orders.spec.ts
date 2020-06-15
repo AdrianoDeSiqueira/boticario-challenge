@@ -92,4 +92,12 @@ describe('DbLoadOrders Usecase', () => {
     await sut.load(resellerId)
     expect(loadAllSpy).toHaveBeenCalledWith('any_social_security_number')
   })
+
+  test('Should throw if LoadOrdersRepository throws', async () => {
+    const { sut, loadOrdersRepositoryStub } = makeSut()
+    jest.spyOn(loadOrdersRepositoryStub, 'loadAll').mockReturnValueOnce(Promise.reject(Error()))
+    const resellerId = 'any_reseller_id'
+    const promise = sut.load(resellerId)
+    await expect(promise).rejects.toThrow()
+  })
 })
