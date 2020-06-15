@@ -7,6 +7,6 @@ export class DbLoadOrders implements LoadOrders {
 
   async load (resellerId: string): Promise<OrderModel[]> {
     await this.loadResellerByIdRepository.loadById(resellerId)
-    return Promise.resolve(null)
+    return null
   }
 }
