@@ -6,7 +6,6 @@ export class ApiLoadCashback implements LoadCashback {
   ) {}
 
   async load (itr: string): Promise<CashbackModel> {
-    await this.loadCashbackApi.load(itr)
-    return Promise.resolve(null)
+    return await this.loadCashbackApi.load(itr)
   }
 }
