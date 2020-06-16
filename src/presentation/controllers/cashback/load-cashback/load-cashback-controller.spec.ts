@@ -1,7 +1,7 @@
 import { LoadCashbackController } from './load-cashback-controller'
 import { HttpRequest, LoadCashback } from './load-cashback-controller-protocols'
 import { CashbackModel } from '@/domain/models/cashback'
-import { serverError } from '@/presentation/helpers/http/http-helper'
+import { serverError, noContent } from '@/presentation/helpers/http/http-helper'
 import { ServerError } from '@/presentation/errors'
 
 const makeLoadCashback = (): LoadCashback => {
@@ -53,5 +53,12 @@ describe('LoadCashback Controller', () => {
     })
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
+  })
+
+  test('Should return 204 if LoadCashback returns empty', async () => {
+    const { sut, loadCashbackStub } = makeSut()
+    jest.spyOn(loadCashbackStub, 'load').mockReturnValueOnce(Promise.resolve(null))
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(noContent())
   })
 })
