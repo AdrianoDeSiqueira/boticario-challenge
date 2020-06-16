@@ -14,9 +14,9 @@ export class CashbackApi implements LoadCashbackApi {
       }
     }
     const res = await request.get(options)
-    const obj = JSON.parse(res)
-    if (obj.statusCode === 200) {
-      return { credit: obj.body.credit }
+    const { statusCode, body } = JSON.parse(res)
+    if (statusCode === 200) {
+      return { credit: body.credit }
     }
     return null
   }
