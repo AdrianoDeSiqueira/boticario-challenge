@@ -49,4 +49,12 @@ describe('Cashback Api', () => {
     expect(cashback).toBeTruthy()
     expect(cashback.credit).toBeTruthy()
   })
+
+  test('Should return null on get statusCode return different 200', async () => {
+    const sut = makeSut()
+    const res = JSON.stringify({ statusCode: 400 })
+    jest.spyOn(request, 'get').mockResolvedValue(res)
+    const cashback = await sut.load('15350946056')
+    expect(cashback).toBeFalsy()
+  })
 })
