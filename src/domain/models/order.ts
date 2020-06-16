@@ -4,5 +4,7 @@ export type OrderModel = {
   value: string
   date: string
   socialSecurityNumber: string
+  cashbackPerc?: string
+  cashbackValue?: number
   status: string
 }
