@@ -29,6 +29,13 @@ const makeSut = (): SutTypes => {
 }
 
 describe('ApiLoadCashback Usecase', () => {
+  test('Should call LoadCashbackApi with correct itr', async () => {
+    const { sut, loadCashbackApiStub } = makeSut()
+    const loadSpy = jest.spyOn(loadCashbackApiStub, 'load')
+    await sut.load('15350946056')
+    expect(loadSpy).toHaveBeenCalledWith('15350946056')
+  })
+
   test('Should throw if LoadCashbackApi throws', async () => {
     const { sut, loadCashbackApiStub } = makeSut()
     jest.spyOn(loadCashbackApiStub, 'load').mockReturnValueOnce(Promise.reject(Error()))
