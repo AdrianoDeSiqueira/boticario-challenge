@@ -37,7 +37,7 @@ describe('Reseller Routes', () => {
         .expect(200)
     })
 
-    test('Should return 401 on signup', async () => {
+    test('Should return 401 on login', async () => {
       await request(app)
         .post('/api/login')
         .send({
