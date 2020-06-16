@@ -42,4 +42,10 @@ describe('ApiLoadCashback Usecase', () => {
     const promise = sut.load('15350946056')
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return an cashback on success', async () => {
+    const { sut } = makeSut()
+    const cashback = await sut.load('15350946056')
+    expect(cashback).toEqual(makeFakeCashbackModel())
+  })
 })
