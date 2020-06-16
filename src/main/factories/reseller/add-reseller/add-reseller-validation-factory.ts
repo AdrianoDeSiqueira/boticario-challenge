@@ -4,7 +4,7 @@ import { EmailValidatorAdapter } from '@/infra/validators/email-validator-adapte
 
 export const makeAddResellerValidation = (): ValidationComposite => {
   const validations: Validation[] = []
-  for (const field of ['socialSecurityNumber', 'name', 'email', 'password', 'passwordConfirmation']) {
+  for (const field of ['itr', 'name', 'email', 'password', 'passwordConfirmation']) {
     validations.push(new RequiredFieldValidation(field))
   }
   validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))

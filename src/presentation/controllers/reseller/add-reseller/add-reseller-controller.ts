@@ -14,9 +14,9 @@ export class AddResellerController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { socialSecurityNumber, name, email, password } = httpRequest.body
+      const { itr, name, email, password } = httpRequest.body
       const reseller = await this.addReseller.add({
-        socialSecurityNumber,
+        itr,
         name,
         email,
         password

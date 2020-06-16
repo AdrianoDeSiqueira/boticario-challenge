@@ -23,7 +23,7 @@ const makeAddReseller = (): AddReseller => {
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    socialSecurityNumber: 'any_socual_security_number',
+    itr: 'any_socual_security_number',
     name: 'any_name',
     email: 'any_email@mail.com',
     password: 'any_password',
@@ -33,7 +33,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
-  socialSecurityNumber: 'any_socual_security_number',
+  itr: 'any_socual_security_number',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'
@@ -77,7 +77,7 @@ describe('AddReseller Controller', () => {
     const addSpy = jest.spyOn(addResellerStub, 'add')
     await sut.handle(makeFakeRequest())
     expect(addSpy).toHaveBeenCalledWith({
-      socialSecurityNumber: 'any_socual_security_number',
+      itr: 'any_socual_security_number',
       name: 'any_name',
       email: 'any_email@mail.com',
       password: 'any_password'

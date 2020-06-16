@@ -1,6 +1,8 @@
 import { DbLoadOrders } from './db-load-orders'
 import { LoadOrdersRepository, OrderModel } from './db-load-orders-protocols'
 
+const makeFakeDate = new Date()
+
 const makeLoadOrdersRepository = (): LoadOrdersRepository => {
   class LoadOrdersRepositoryStub implements LoadOrdersRepository {
     async loadAll (): Promise<OrderModel[]> {
@@ -18,9 +20,9 @@ const makeFakeOrderModels = (): OrderModel[] => [
 const makeFakeOrderModel = (): OrderModel => ({
   id: 'any_id',
   code: 'any_code',
-  value: 'any_value',
-  date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number',
+  value: 1999.99,
+  date: makeFakeDate,
+  itr: 'any_social_security_number',
   status: 'any_status'
 })
 

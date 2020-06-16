@@ -3,6 +3,8 @@ import { HttpRequest, LoadOrders } from './load-orders-controller-protocols'
 import { ok, noContent, serverError } from '@/presentation/helpers/http/http-helper'
 import { OrderModel } from '@/domain/models/order'
 
+const makeFakeDate = new Date()
+
 const makeLoadOrders = (): LoadOrders => {
   class LoadOrdersStub implements LoadOrders {
     async load (): Promise<OrderModel[]> {
@@ -20,9 +22,9 @@ const makeFakeOrderModels = (): OrderModel[] => [
 const makeFakeOrderModel = (): OrderModel => ({
   id: 'any_id',
   code: 'any_code',
-  value: 'any_value',
-  date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number',
+  value: 1999.99,
+  date: makeFakeDate,
+  itr: 'any_social_security_number',
   status: 'any_status'
 })
 

@@ -2,9 +2,9 @@ import { OrderModel } from '@/domain/models/order'
 
 export interface AddOrderModel {
   code: string
-  value: string
-  date: string
-  socialSecurityNumber: string
+  value: number
+  date: Date
+  itr: string
   status?: string
 }
 

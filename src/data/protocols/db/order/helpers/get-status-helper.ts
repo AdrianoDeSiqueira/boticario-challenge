@@ -1,3 +1,3 @@
 export interface GetStatusHelper {
-  get: (socialSecurityNumber: string) => Promise<string>
+  get: (itr: string) => Promise<string>
 }

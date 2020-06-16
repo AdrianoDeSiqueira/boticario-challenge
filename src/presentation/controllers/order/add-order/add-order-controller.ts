@@ -13,12 +13,12 @@ export class AddOrderController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { code, value, date, socialSecurityNumber } = httpRequest.body
+      const { code, value, date, itr } = httpRequest.body
       const order = await this.addOrder.add({
         code,
         value,
         date,
-        socialSecurityNumber
+        itr
       })
       return created(order)
     } catch (error) {

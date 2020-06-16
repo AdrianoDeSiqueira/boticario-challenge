@@ -40,7 +40,7 @@ const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
 
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
-  socialSecurityNumber: 'any_social_security_number',
+  itr: 'any_social_security_number',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'hashed_password'

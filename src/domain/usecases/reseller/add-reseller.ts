@@ -1,7 +1,7 @@
 import { ResellerModel } from '@/domain/models/reseller'
 
 export interface AddResellerModel {
-  socialSecurityNumber: string
+  itr: string
   name: string
   email: string
   password: string

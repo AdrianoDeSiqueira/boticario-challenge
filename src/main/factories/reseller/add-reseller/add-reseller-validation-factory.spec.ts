@@ -18,7 +18,7 @@ describe('AddResellerValidation Factory', () => {
   test('Should call ValidationComposite with all validations', () => {
     makeAddResellerValidation()
     const validations: Validation[] = []
-    for (const field of ['socialSecurityNumber', 'name', 'email', 'password', 'passwordConfirmation']) {
+    for (const field of ['itr', 'name', 'email', 'password', 'passwordConfirmation']) {
       validations.push(new RequiredFieldValidation(field))
     }
     validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))

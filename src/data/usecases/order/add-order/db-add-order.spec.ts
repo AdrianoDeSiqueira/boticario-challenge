@@ -1,9 +1,11 @@
 import { DbAddOrder } from './db-add-order'
 import { AddOrderModel, OrderModel, GetStatusHelper, AddOrderRepository } from './db-add-order-protocols'
 
+const makeFakeDate = new Date()
+
 const makeStatus = (): GetStatusHelper => {
   class StatusStub implements GetStatusHelper {
-    async get (socialSecurityNumber: string): Promise<string> {
+    async get (itr: string): Promise<string> {
       return Promise.resolve('any_status')
     }
   }
@@ -21,17 +23,17 @@ const makeAddOrderRepository = (): AddOrderRepository => {
 
 const makeFakeOrderData = (): AddOrderModel => ({
   code: 'any_code',
-  value: 'any_value',
-  date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number'
+  value: 1999.99,
+  date: makeFakeDate,
+  itr: 'any_social_security_number'
 })
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
   code: 'any_code',
-  value: 'any_value',
-  date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number',
+  value: 1999.99,
+  date: makeFakeDate,
+  itr: 'any_social_security_number',
   status: 'any_status'
 })
 
@@ -71,13 +73,7 @@ describe('DbAddOrder Usecase', () => {
     const { sut, addOrderRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addOrderRepositoryStub, 'add')
     await sut.add(makeFakeOrderData())
-    expect(addSpy).toHaveBeenCalledWith({
-      code: 'any_code',
-      value: 'any_value',
-      date: 'any_date',
-      socialSecurityNumber: 'any_social_security_number',
-      status: 'any_status'
-    })
+    expect(addSpy).toHaveBeenCalledWith(Object.assign({}, makeFakeOrderData(), { status: 'any_status' }))
   })
 
   test('Should throw if AddOrderRepository throws', async () => {

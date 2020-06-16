@@ -3,6 +3,8 @@ import { HttpRequest, Validation, AddOrder, AddOrderModel, OrderModel } from './
 import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
 import { MissingParamError, ServerError } from '@/presentation/errors'
 
+const makeFakeDate = new Date()
+
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
     validate (input: any): Error {
@@ -24,18 +26,18 @@ const makeAddOrder = (): AddOrder => {
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     code: 'any_code',
-    value: 'any_value',
-    date: 'any_date',
-    socialSecurityNumber: 'any_social_security_number'
+    value: 1999.99,
+    date: makeFakeDate,
+    itr: 'any_social_security_number'
   }
 })
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
   code: 'any_code',
-  value: 'any_value',
-  date: 'any_date',
-  socialSecurityNumber: 'any_social_security_number',
+  value: 1999.99,
+  date: makeFakeDate,
+  itr: 'any_social_security_number',
   status: 'any_status'
 })
 
@@ -75,13 +77,9 @@ describe('AddOrder Controller', () => {
   test('Should call AddOrder with correct values', async () => {
     const { sut, addOrderStub } = makeSut()
     const addSpy = jest.spyOn(addOrderStub, 'add')
-    await sut.handle(makeFakeRequest())
-    expect(addSpy).toHaveBeenCalledWith({
-      code: 'any_code',
-      value: 'any_value',
-      date: 'any_date',
-      socialSecurityNumber: 'any_social_security_number'
-    })
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
   test('Should return 500 if AddOrder throws', async () => {

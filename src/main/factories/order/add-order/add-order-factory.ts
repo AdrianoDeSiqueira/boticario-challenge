@@ -9,9 +9,9 @@ import { StatusHelper } from '@/infra/db/mongodb/order/helpers/status-helper'
 import { OrderMongoRepository } from '@/infra/db/mongodb/order/order-mongo-repository'
 
 export const makeAddOrderController = (): Controller => {
-  const specificSocialSecurityNumber = env.specificSocialSecurityNumber
+  const specificITR = env.specificITR
   const orderMongoRepository = new OrderMongoRepository()
-  const status = new StatusHelper(specificSocialSecurityNumber)
+  const status = new StatusHelper(specificITR)
   const dbAddOrder = new DbAddOrder(status, orderMongoRepository)
   const addResellerController = new AddOrderController(makeAddOrderValidation(), dbAddOrder)
   const logMongoRepository = new LogMongoRepository()

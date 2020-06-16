@@ -53,7 +53,7 @@ describe('Reseller Routes', () => {
       await request(app)
         .post('/api/reseller')
         .send({
-          socialSecurityNumber: 'any_social_security_number',
+          itr: 'any_social_security_number',
           name: 'any_name',
           email: 'any_email@mail.com',
           password: 'any_password',

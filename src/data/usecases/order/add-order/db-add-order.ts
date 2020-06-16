@@ -7,7 +7,7 @@ export class DbAddOrder implements AddOrder {
   ) {}
 
   async add (orderData: AddOrderModel): Promise<OrderModel> {
-    const status = await this.status.get(orderData.socialSecurityNumber)
+    const status = await this.status.get(orderData.itr)
     const order = await this.addOrderRepository.add(Object.assign({}, orderData, { status: status }))
     return order
   }

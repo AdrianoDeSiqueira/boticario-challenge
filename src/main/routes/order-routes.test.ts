@@ -27,7 +27,7 @@ describe('Order Routes', () => {
           code: '1234567890',
           value: '1234,70',
           date: '2020/06/13',
-          socialSecurityNumber: '26977287080'
+          itr: '26977287080'
         })
         .expect(201)
     })
@@ -36,9 +36,9 @@ describe('Order Routes', () => {
       await request(app)
         .post('/api/order')
         .send({
-          value: '1234,70',
-          date: '2020/06/13',
-          socialSecurityNumber: '326977287080'
+          value: 1999.99,
+          date: new Date(),
+          itr: '326977287080'
         })
         .expect(400)
     })
@@ -49,9 +49,9 @@ describe('Order Routes', () => {
       await orderCollection.insertOne({
         id: 'any_id',
         code: 'any_code',
-        value: 'any_value',
-        date: 'any_date',
-        socialSecurityNumber: 'any_social_security_number',
+        value: 1999.99,
+        date: new Date(),
+        itr: 'any_social_security_number',
         status: 'any_status'
       })
       await request(app)

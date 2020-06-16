@@ -1,10 +1,10 @@
 export type OrderModel = {
   id: string
   code: string
-  value: string
-  date: string
-  socialSecurityNumber: string
-  cashbackPerc?: string
+  value: number
+  date: Date
+  itr: string
+  cashbackPerc?: number
   cashbackValue?: number
-  status: string
+  status?: string
 }
