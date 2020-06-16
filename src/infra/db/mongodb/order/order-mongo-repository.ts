@@ -2,7 +2,7 @@ import { AddOrderRepository } from '@/data/protocols/db/order/add-order-reposito
 import { LoadOrdersRepository } from '@/data/protocols/db/order/load-orders-repository'
 import { AddOrderModel } from '@/domain/usecases/order/add-order'
 import { OrderModel } from '@/domain/models/order'
-import { MongoHelper, QueryBuilder } from '@/infra/db/mongodb/helpers'
+import { MongoHelper } from '@/infra/db/mongodb/helpers'
 
 export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepository {
   async add (orderData: AddOrderModel): Promise<OrderModel> {
@@ -13,10 +13,9 @@ export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepos
 
   async loadAll (): Promise<OrderModel[]> {
     const orderCollection = await MongoHelper.getCollection('orders')
-    const query = new QueryBuilder()
-      .sort({ date: -1 })
-      .build()
-    const orders = await orderCollection.aggregate(query).toArray()
+    const orders = await orderCollection.aggregate([
+      { $sort: { date: -1 } }
+    ]).toArray()
     return MongoHelper.mapCollection(orders)
   }
 }
