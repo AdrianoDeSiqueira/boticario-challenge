@@ -1,5 +1,5 @@
 import { DbAddOrder } from './db-add-order'
-import { AddOrderModel, OrderModel, GetStatusHelper, GetCashbackHelper, CashbackModel, AddOrderRepository } from './db-add-order-protocols'
+import { AddOrderModel, OrderModel, GetStatusHelper, GetCashbackHelper, GetCashbackModel, AddOrderRepository } from './db-add-order-protocols'
 
 const makeFakeDate = new Date()
 
@@ -14,7 +14,7 @@ const makeStatus = (): GetStatusHelper => {
 
 const makeCashbackHelper = (): GetCashbackHelper => {
   class CashbackHelper implements GetCashbackHelper {
-    async get (valuePurchase: number): Promise<CashbackModel> {
+    async get (valuePurchase: number): Promise<GetCashbackModel> {
       return Promise.resolve({
         cashbackPerc: 10,
         cashbackValue: 100.00
