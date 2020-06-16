@@ -14,23 +14,25 @@ jest.mock('request-promise-native', () => ({
   }
 }))
 
+const uri = env.cashbackApi
+const token = env.cashbackApiToken
 const fakeRequestOptions = (): object => ({
-  uri: env.cashbackApi + '?cpf=15350946056',
+  uri: uri + '?cpf=15350946056',
   headers: {
     contentType: 'application/json',
-    token: env.cashbackApiToken
+    token: token
   }
 })
 
 const makeSut = (): CashbackApi => {
-  return new CashbackApi()
+  return new CashbackApi(uri, token)
 }
 
 describe('Cashback Api', () => {
   test('Should call get with correct values', async () => {
     const sut = makeSut()
     const getSpy = jest.spyOn(request, 'get')
-    await sut.load('15350946056')
+    await sut.load('15350946056', 'cpf')
     expect(getSpy).toHaveBeenCalledWith(fakeRequestOptions())
   })
 
@@ -39,13 +41,13 @@ describe('Cashback Api', () => {
     jest.spyOn(request, 'get').mockImplementationOnce(() => {
       throw new Error()
     })
-    const promise = sut.load('15350946056')
+    const promise = sut.load('15350946056', 'cpf')
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return an cashback on load success', async () => {
     const sut = makeSut()
-    const cashback = await sut.load('15350946056')
+    const cashback = await sut.load('15350946056', 'cpf')
     expect(cashback).toBeTruthy()
     expect(cashback.credit).toBeTruthy()
   })
@@ -54,7 +56,7 @@ describe('Cashback Api', () => {
     const sut = makeSut()
     const res = JSON.stringify({ statusCode: 400 })
     jest.spyOn(request, 'get').mockResolvedValue(res)
-    const cashback = await sut.load('15350946056')
+    const cashback = await sut.load('15350946056', 'cpf')
     expect(cashback).toBeFalsy()
   })
 })

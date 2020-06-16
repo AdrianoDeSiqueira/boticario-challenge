@@ -3,7 +3,7 @@ import { LoadCashbackApi, CashbackModel } from './api-load-cashback-protocols'
 
 const makeLoadCashbackApiStub = (): LoadCashbackApi => {
   class LoadCashbackApiStub implements LoadCashbackApi {
-    async load (itr: string): Promise<CashbackModel> {
+    async load (itr: string, param: string): Promise<CashbackModel> {
       return Promise.resolve(makeFakeCashbackModel())
     }
   }
@@ -33,7 +33,7 @@ describe('ApiLoadCashback Usecase', () => {
     const { sut, loadCashbackApiStub } = makeSut()
     const loadSpy = jest.spyOn(loadCashbackApiStub, 'load')
     await sut.load('15350946056')
-    expect(loadSpy).toHaveBeenCalledWith('15350946056')
+    expect(loadSpy).toHaveBeenCalledWith('15350946056', 'cpf')
   })
 
   test('Should throw if LoadCashbackApi throws', async () => {
