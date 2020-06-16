@@ -1,5 +1,5 @@
 import { DbAddOrder } from './db-add-order'
-import { AddOrderModel, OrderModel, GetStatusHelper, AddOrderRepository } from './db-add-order-protocols'
+import { AddOrderModel, OrderModel, GetStatusHelper, GetCashbackHelper, CashbackModel, AddOrderRepository } from './db-add-order-protocols'
 
 const makeFakeDate = new Date()
 
@@ -10,6 +10,18 @@ const makeStatus = (): GetStatusHelper => {
     }
   }
   return new StatusStub()
+}
+
+const makeCashbackHelper = (): GetCashbackHelper => {
+  class CashbackHelper implements GetCashbackHelper {
+    async get (valuePurchase: number): Promise<CashbackModel> {
+      return Promise.resolve({
+        cashbackPerc: 10,
+        cashbackValue: 100.00
+      })
+    }
+  }
+  return new CashbackHelper()
 }
 
 const makeAddOrderRepository = (): AddOrderRepository => {
@@ -34,28 +46,33 @@ const makeFakeOrder = (): OrderModel => ({
   value: 1999.99,
   date: makeFakeDate,
   itr: 'any_social_security_number',
+  cashbackPerc: 10,
+  cashbackValue: 100,
   status: 'any_status'
 })
 
 interface sutTypes {
   sut: DbAddOrder
   statusStub: GetStatusHelper
+  cashbackStub: GetCashbackHelper
   addOrderRepositoryStub: AddOrderRepository
 }
 
 const makeSut = (): sutTypes => {
   const statusStub = makeStatus()
+  const cashbackStub = makeCashbackHelper()
   const addOrderRepositoryStub = makeAddOrderRepository()
-  const sut = new DbAddOrder(statusStub, addOrderRepositoryStub)
+  const sut = new DbAddOrder(statusStub, cashbackStub, addOrderRepositoryStub)
   return {
     sut,
     statusStub,
+    cashbackStub,
     addOrderRepositoryStub
   }
 }
 
 describe('DbAddOrder Usecase', () => {
-  test('Should call Status with correct social security number', async () => {
+  test('Should call Status with correct itr', async () => {
     const { sut, statusStub } = makeSut()
     const getSpy = jest.spyOn(statusStub, 'get')
     await sut.add(makeFakeOrderData())
@@ -69,11 +86,25 @@ describe('DbAddOrder Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should call Cashback with correct value', async () => {
+    const { sut, cashbackStub } = makeSut()
+    const getSpy = jest.spyOn(cashbackStub, 'get')
+    await sut.add(makeFakeOrderData())
+    expect(getSpy).toHaveBeenCalledWith(1999.99)
+  })
+
+  test('Should throw if Cashback throws', async () => {
+    const { sut, cashbackStub } = makeSut()
+    jest.spyOn(cashbackStub, 'get').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeOrderData())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call AddOrderRepository with correct values', async () => {
     const { sut, addOrderRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addOrderRepositoryStub, 'add')
     await sut.add(makeFakeOrderData())
-    expect(addSpy).toHaveBeenCalledWith(Object.assign({}, makeFakeOrderData(), { status: 'any_status' }))
+    expect(addSpy).toHaveBeenCalledWith(Object.assign({}, makeFakeOrderData(), { status: 'any_status', cashbackPerc: 10, cashbackValue: 100 }))
   })
 
   test('Should throw if AddOrderRepository throws', async () => {
