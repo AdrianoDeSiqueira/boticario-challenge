@@ -34,6 +34,15 @@ describe('Cashback Api', () => {
     expect(getSpy).toHaveBeenCalledWith(fakeRequestOptions())
   })
 
+  test('Should throw if get throws', async () => {
+    const sut = makeSut()
+    jest.spyOn(request, 'get').mockImplementationOnce(() => {
+      throw new Error()
+    })
+    const promise = sut.load('15350946056')
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should return an cashback on load success', async () => {
     const sut = makeSut()
     const cashback = await sut.load('15350946056')
