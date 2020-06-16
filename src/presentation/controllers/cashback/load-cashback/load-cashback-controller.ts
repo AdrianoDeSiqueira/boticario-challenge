@@ -1,4 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, LoadCashback } from './load-cashback-controller-protocols'
+import { serverError } from '@/presentation/helpers/http/http-helper'
 
 export class LoadCashbackController implements Controller {
   constructor (
@@ -6,8 +7,12 @@ export class LoadCashbackController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const { itr } = httpRequest.params
-    await this.cashbackLoad.load(itr)
-    return Promise.resolve(null)
+    try {
+      const { itr } = httpRequest.params
+      await this.cashbackLoad.load(itr)
+      return Promise.resolve(null)
+    } catch (error) {
+      return serverError(error)
+    }
   }
 }
