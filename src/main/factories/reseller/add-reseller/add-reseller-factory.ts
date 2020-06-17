@@ -11,7 +11,7 @@ export const makeAddResellerController = (): Controller => {
   const salt = 12
   const bcryptAdapter = new BcryptAdapter(salt)
   const resellerMongoRepository = new ResellerMongoRepository()
-  const dbAddReseller = new DbAddReseller(bcryptAdapter, resellerMongoRepository)
+  const dbAddReseller = new DbAddReseller(bcryptAdapter, resellerMongoRepository, resellerMongoRepository)
   const addResellerController = new AddResellerController(makeAddResellerValidation(), dbAddReseller)
   const logMongoRepository = new LogMongoRepository()
   return new LogControllerDecorator(addResellerController, logMongoRepository)
