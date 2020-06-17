@@ -1,5 +1,5 @@
 import { AuthMiddleware } from './auth-middleware'
-import { LoadResellerByToken, ResellerModel } from './auth-middleware-protocols'
+import { LoadResellerByToken, ResellerModel, HttpRequest } from './auth-middleware-protocols'
 import { forbidden } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors'
 
@@ -18,6 +18,12 @@ const makeFakeReseller = (): ResellerModel => ({
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'
+})
+
+const mockRequest = (): HttpRequest => ({
+  headers: {
+    'x-access-token': 'any_token'
+  }
 })
 
 type SutTypes = {
@@ -39,5 +45,13 @@ describe('Auth Middleware', () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
+  })
+
+  test('Should call LoadAccountByToken with correct accessToken', async () => {
+    const { sut, loadAccountByTokenStub } = makeSut()
+    const spyLoad = jest.spyOn(loadAccountByTokenStub, 'load')
+    const httpRequest = mockRequest()
+    await sut.handle(httpRequest)
+    expect(spyLoad).toBeCalledWith(httpRequest.headers['x-access-token'])
   })
 })
