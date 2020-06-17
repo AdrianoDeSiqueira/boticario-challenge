@@ -1,7 +1,7 @@
 import { AddResellerController } from './add-reseller-controller'
 import { HttpRequest, Validation, AddReseller, AddResellerModel, ResellerModel } from './add-reseller-controller-protocols'
-import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
-import { MissingParamError, ServerError } from '@/presentation/errors'
+import { badRequest, forbidden, serverError, created } from '@/presentation/helpers/http/http-helper'
+import { MissingParamError, ServerError, EmailInUseError } from '@/presentation/errors'
 
 const makeValidation = (): Validation => {
   class ValidationStub implements Validation {
@@ -82,6 +82,13 @@ describe('AddReseller Controller', () => {
       email: 'any_email@mail.com',
       password: 'any_password'
     })
+  })
+
+  test('Should return 403 if AddReseller returns null', async () => {
+    const { sut, addResellerStub } = makeSut()
+    jest.spyOn(addResellerStub, 'add').mockReturnValueOnce(null)
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
 
   test('Should return 500 if AddReseller throws', async () => {
