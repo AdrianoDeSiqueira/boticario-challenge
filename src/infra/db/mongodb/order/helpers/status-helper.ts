@@ -6,7 +6,7 @@ export class StatusHelper implements GetStatusHelper {
   ) {}
 
   async get (itr: string): Promise<string> {
-    if (this.specificITR === itr) {
+    if (Number.parseInt(this.specificITR) === Number.parseInt(itr)) {
       return Promise.resolve('Aprovado')
     }
     return Promise.resolve('Em validação')

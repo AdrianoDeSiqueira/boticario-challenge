@@ -1,6 +1,6 @@
 import { StatusHelper } from './status-helper'
 
-const itr: string = 'specific_individual_taxpayer_registration'
+const itr: string = '15350946056'
 
 const makeSut = (): StatusHelper => {
   return new StatusHelper(itr)
