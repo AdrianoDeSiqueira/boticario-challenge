@@ -19,10 +19,10 @@ describe('Cashback Routes', () => {
     await orderCollection.deleteMany({})
   })
 
-  describe('GET /cashback', () => {
+  describe('GET /cashback/:itr', () => {
     test('Should return 200 on load cashback', async () => {
       await request(app)
-        .get('/api/cashback?itr=12312312323')
+        .get('/api/cashback/12312312323')
         .expect(200)
     })
   })
