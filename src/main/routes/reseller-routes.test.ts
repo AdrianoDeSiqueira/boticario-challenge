@@ -22,17 +22,18 @@ describe('Reseller Routes', () => {
 
   describe('POST /login', () => {
     test('Should return 200 on login', async () => {
-      const password = await hash('any_password', 12)
+      const password = await hash('Boticario2020', 12)
       await resellerCollection.insertOne({
-        name: 'any_name',
-        email: 'any_email@mail.com',
+        itr: '341.273.118-86',
+        name: 'Adriano Nunes de Siqueira',
+        email: 'adriano.siqueira@grupoboticario.com.br',
         password
       })
       await request(app)
         .post('/api/login')
         .send({
-          email: 'any_email@mail.com',
-          password: 'any_password'
+          email: 'adriano.siqueira@grupoboticario.com.br',
+          password: 'Boticario2020'
         })
         .expect(200)
     })
@@ -41,8 +42,8 @@ describe('Reseller Routes', () => {
       await request(app)
         .post('/api/login')
         .send({
-          email: 'any_email@mail.com',
-          password: 'any_password'
+          email: 'adriano.siqueira@grupoboticario.com.br',
+          password: 'Boticario2020'
         })
         .expect(401)
     })
@@ -53,11 +54,11 @@ describe('Reseller Routes', () => {
       await request(app)
         .post('/api/reseller')
         .send({
-          itr: 'any_social_security_number',
-          name: 'any_name',
-          email: 'any_email@mail.com',
-          password: 'any_password',
-          passwordConfirmation: 'any_password'
+          itr: '341.273.118-86',
+          name: 'Adriano Nunes de Siqueira',
+          email: 'adriano.siqueira@grupoboticario.com.br',
+          password: 'Boticario2020',
+          passwordConfirmation: 'Boticario2020'
         })
         .expect(201)
     })
@@ -66,10 +67,10 @@ describe('Reseller Routes', () => {
       await request(app)
         .post('/api/reseller')
         .send({
-          name: 'any_name',
-          email: 'any_email@mail.com',
-          password: 'any_password',
-          passwordConfirmation: 'any_password'
+          name: 'Adriano Nunes de Siqueira',
+          email: 'adriano.siqueira@grupoboticario.com.br',
+          password: 'Boticario2020',
+          passwordConfirmation: 'Boticario2020'
         })
         .expect(400)
     })
