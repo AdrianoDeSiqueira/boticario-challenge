@@ -1,6 +1,6 @@
 import { AuthMiddleware } from './auth-middleware'
 import { LoadResellerByToken, ResellerModel, HttpRequest } from './auth-middleware-protocols'
-import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
+import { forbidden, serverError, ok } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors'
 
 const makeLoadResellerByToken = (): LoadResellerByToken => {
@@ -28,15 +28,15 @@ const mockRequest = (): HttpRequest => ({
 
 type SutTypes = {
   sut: AuthMiddleware
-  loadAccountByTokenStub: LoadResellerByToken
+  loadResellerByTokenStub: LoadResellerByToken
 }
 
 const makeSut = (role?: string): SutTypes => {
-  const loadAccountByTokenStub = makeLoadResellerByToken()
-  const sut = new AuthMiddleware(loadAccountByTokenStub)
+  const loadResellerByTokenStub = makeLoadResellerByToken()
+  const sut = new AuthMiddleware(loadResellerByTokenStub)
   return {
     sut,
-    loadAccountByTokenStub
+    loadResellerByTokenStub
   }
 }
 
@@ -47,27 +47,33 @@ describe('Auth Middleware', () => {
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
-  test('Should call LoadAccountByToken with correct accessToken', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
-    const spyLoad = jest.spyOn(loadAccountByTokenStub, 'load')
+  test('Should call LoadResellerByToken with correct accessToken', async () => {
+    const { sut, loadResellerByTokenStub } = makeSut()
+    const spyLoad = jest.spyOn(loadResellerByTokenStub, 'load')
     const httpRequest = mockRequest()
     await sut.handle(httpRequest)
     expect(spyLoad).toBeCalledWith(httpRequest.headers['x-access-token'])
   })
 
-  test('Should return 403 if LoadAccountByToken returns null', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
-    jest.spyOn(loadAccountByTokenStub, 'load').mockReturnValueOnce(null)
+  test('Should return 403 if LoadResellerByToken returns null', async () => {
+    const { sut, loadResellerByTokenStub } = makeSut()
+    jest.spyOn(loadResellerByTokenStub, 'load').mockReturnValueOnce(null)
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()))
   })
 
-  test('Should return 500 if LoadAccountByToken throws', async () => {
-    const { sut, loadAccountByTokenStub } = makeSut()
-    jest.spyOn(loadAccountByTokenStub, 'load').mockImplementationOnce(async () => {
+  test('Should return 500 if LoadResellerByToken throws', async () => {
+    const { sut, loadResellerByTokenStub } = makeSut()
+    jest.spyOn(loadResellerByTokenStub, 'load').mockImplementationOnce(async () => {
       return Promise.reject(Error())
     })
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
+  })
+
+  test('Should return 200 if LoadResellerByToken returns an reseller', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok({ resellerId: 'any_id' }))
   })
 })
