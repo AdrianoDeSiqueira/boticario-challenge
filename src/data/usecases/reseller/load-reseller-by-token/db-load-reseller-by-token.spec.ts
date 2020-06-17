@@ -38,4 +38,11 @@ describe('DbLoadResellerByToken Usecase', () => {
     const account = await sut.load('any_token')
     expect(account).toBeNull()
   })
+
+  test('Should throw if Decrypter throws', async () => {
+    const { sut, decrypterStub } = makeSut()
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.load('any_token')
+    await expect(promise).rejects.toThrow()
+  })
 })
