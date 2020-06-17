@@ -1,13 +1,13 @@
 import { AddResellerRepository } from '@/data/protocols/db/reseller/add-reseller-repository'
 import { AddResellerModel } from '@/domain/usecases/reseller/add-reseller'
-
 import { ResellerModel } from '@/domain/models/reseller'
 import { MongoHelper } from '@/infra/db/mongodb/helpers/mongo-helper'
 import { LoadResellerByEmailRepository } from '@/data/protocols/db/reseller/load-reseller-by-email-repository'
 import { UpdateAccessTokenRepository } from '@/data/protocols/db/reseller/update-access-token-repository'
-import { LoadResellerByIdRepository } from '@/data/usecases/order/load-orders/db-load-orders-protocols'
+import { LoadResellerByIdRepository } from '@/data/protocols/db/reseller/load-reseller-by-id-repository'
+import { LoadResellerByTokenRepository } from '@/data/protocols/db/reseller/load-reseller-by-token-repository'
 
-export class ResellerMongoRepository implements AddResellerRepository, LoadResellerByEmailRepository, UpdateAccessTokenRepository, LoadResellerByIdRepository {
+export class ResellerMongoRepository implements AddResellerRepository, LoadResellerByEmailRepository, UpdateAccessTokenRepository, LoadResellerByIdRepository, LoadResellerByTokenRepository {
   async add (resellerData: AddResellerModel): Promise<ResellerModel> {
     const resellerCollection = await MongoHelper.getCollection('resellers')
     const result = await resellerCollection.insertOne(resellerData)
@@ -33,5 +33,13 @@ export class ResellerMongoRepository implements AddResellerRepository, LoadResel
     }, {
       $set: { accessToken: token }
     })
+  }
+
+  async loadByToken (token: string): Promise<ResellerModel> {
+    const resellerCollection = await MongoHelper.getCollection('resellers')
+    const reseller = await resellerCollection.findOne({
+      accessToken: token
+    })
+    return reseller && MongoHelper.map(reseller)
   }
 }
