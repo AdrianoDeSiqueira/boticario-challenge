@@ -108,4 +108,24 @@ describe('ResellerMongo Repository', () => {
       expect(reseller.accessToken).toBe('any_token')
     })
   })
+
+  describe('loadByToken()', () => {
+    test('Should return an reseller on loadByToken', async () => {
+      const sut = makeSut()
+      await resellerCollection.insertOne({
+        itr: 'any_social_security_number',
+        name: 'any_name',
+        email: 'any_email@mail.com',
+        password: 'any_password',
+        accessToken: 'any_token'
+      })
+      const reseller = await sut.loadByToken('any_token')
+      expect(reseller).toBeTruthy()
+      expect(reseller.id).toBeTruthy()
+      expect(reseller.itr).toBe('any_social_security_number')
+      expect(reseller.name).toBe('any_name')
+      expect(reseller.email).toBe('any_email@mail.com')
+      expect(reseller.password).toBe('any_password')
+    })
+  })
 })
