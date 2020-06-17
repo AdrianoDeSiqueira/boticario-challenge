@@ -1,5 +1,5 @@
 import { makeAddOrderValidation } from './add-order-validation-factory'
-import { ValidationComposite, RequiredFieldValidation } from '@/validation/validators'
+import { ValidationComposite, RequiredFieldValidation, ITRFieldValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
 
 jest.mock('@/validation/validators/validation-composite')
@@ -11,6 +11,7 @@ describe('AddOrderValidation Factory', () => {
     for (const field of ['code', 'value', 'date', 'itr']) {
       validations.push(new RequiredFieldValidation(field))
     }
+    validations.push(new ITRFieldValidation('itr'))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
   })
 })
