@@ -1,14 +1,14 @@
 import { DbAuthentication } from './db-authentication'
-import { AuthenticationParams, LoadAccountByEmailRepository, HashComparer, Encrypter, UpdateAccessTokenRepository } from './db-authentication-protocols'
+import { AuthenticationParams, LoadResellerByEmailRepository, HashComparer, Encrypter, UpdateAccessTokenRepository } from './db-authentication-protocols'
 import { ResellerModel } from '@/domain/models/reseller'
 
-const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
+const makeLoadResellerByEmailRepository = (): LoadResellerByEmailRepository => {
+  class LoadResellerByEmailRepositoryStub implements LoadResellerByEmailRepository {
     async loadByEmail (email: string): Promise<ResellerModel> {
       return Promise.resolve(makeFakeReseller())
     }
   }
-  return new LoadAccountByEmailRepositoryStub()
+  return new LoadResellerByEmailRepositoryStub()
 }
 
 const makeHashComparer = (): HashComparer => {
@@ -53,26 +53,26 @@ const makeFakeAuthentication = (): AuthenticationParams => ({
 
 interface sutTypes {
   sut: DbAuthentication
-  loadAccountByEmailRepositoryStub: LoadAccountByEmailRepository
+  loadResellerByEmailRepositoryStub: LoadResellerByEmailRepository
   hashComparerStub: HashComparer
   encrypterStub: Encrypter
   updateAccessTokenRepositoryStub: UpdateAccessTokenRepository
 }
 
 const makeSut = (): sutTypes => {
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository()
+  const loadResellerByEmailRepositoryStub = makeLoadResellerByEmailRepository()
   const hashComparerStub = makeHashComparer()
   const encrypterStub = makeEncrypter()
   const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository()
   const sut = new DbAuthentication(
-    loadAccountByEmailRepositoryStub,
+    loadResellerByEmailRepositoryStub,
     hashComparerStub,
     encrypterStub,
     updateAccessTokenRepositoryStub
   )
   return {
     sut,
-    loadAccountByEmailRepositoryStub,
+    loadResellerByEmailRepositoryStub,
     hashComparerStub,
     encrypterStub,
     updateAccessTokenRepositoryStub
@@ -80,23 +80,23 @@ const makeSut = (): sutTypes => {
 }
 
 describe('DbAuthentication Usecase', () => {
-  test('Should call LoadAccountByEmailRepository with correct email', async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    const loadSpy = jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+  test('Should call LoadResellerByEmailRepository with correct email', async () => {
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    const loadSpy = jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail')
     await sut.auth(makeFakeAuthentication())
     expect(loadSpy).toHaveBeenCalledWith('any_email@mail.com')
   })
 
-  test('Should throw LoadAccountByEmailRepository throws', async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.reject(new Error()))
+  test('Should throw LoadResellerByEmailRepository throws', async () => {
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.reject(new Error()))
     const promise = sut.auth(makeFakeAuthentication())
     await expect(promise).rejects.toThrow()
   })
 
-  test('Should return null if LoadAccountByEmailRepository returns null', async () => {
-    const { sut, loadAccountByEmailRepositoryStub } = makeSut()
-    jest.spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
+  test('Should return null if LoadResellerByEmailRepository returns null', async () => {
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     const accessToken = await sut.auth(makeFakeAuthentication())
     expect(accessToken).toBeNull()
   })

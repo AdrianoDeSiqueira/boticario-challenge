@@ -1,5 +1,6 @@
 import { DbAddReseller } from './db-add-reseller'
 import { AddResellerModel, ResellerModel, Hasher, AddResellerRepository } from './db-add-reseller-protocols'
+import { LoadResellerByEmailRepository } from '../../authentication/db-authentication-protocols'
 
 const makeHasher = (): Hasher => {
   class HasherStub implements Hasher {
@@ -17,6 +18,15 @@ const makeAddResellerRepository = (): AddResellerRepository => {
     }
   }
   return new AddResellerRepositoryStub()
+}
+
+const makeLoadResellerByEmailRepository = (): LoadResellerByEmailRepository => {
+  class LoadResellerByEmailRepositoryStub implements LoadResellerByEmailRepository {
+    async loadByEmail (email: string): Promise<ResellerModel> {
+      return Promise.resolve(makeFakeReseller())
+    }
+  }
+  return new LoadResellerByEmailRepositoryStub()
 }
 
 const makeFakeResellerData = (): AddResellerModel => ({
@@ -38,36 +48,56 @@ interface sutTypes {
   sut: DbAddReseller
   hasherStub: Hasher
   addResellerRepositoryStub: AddResellerRepository
+  loadResellerByEmailRepositoryStub: LoadResellerByEmailRepository
 }
 
 const makeSut = (): sutTypes => {
   const hasherStub = makeHasher()
   const addResellerRepositoryStub = makeAddResellerRepository()
-  const sut = new DbAddReseller(hasherStub, addResellerRepositoryStub)
+  const loadResellerByEmailRepositoryStub = makeLoadResellerByEmailRepository()
+  const sut = new DbAddReseller(hasherStub, addResellerRepositoryStub, loadResellerByEmailRepositoryStub)
   return {
     sut,
     hasherStub,
-    addResellerRepositoryStub
+    addResellerRepositoryStub,
+    loadResellerByEmailRepositoryStub
   }
 }
 
 describe('DbAddReseller Usecase', () => {
+  test('Should call LoadResellerByEmailRepository with correct password', async () => {
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    const spyLoadEmail = jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail')
+    await sut.add(makeFakeResellerData())
+    expect(spyLoadEmail).toHaveBeenCalledWith('any_email@mail.com')
+  })
+
+  test('Should throw if LoadResellerByEmailRepository throws', async () => {
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(Promise.reject(Error()))
+    const promise = sut.add(makeFakeResellerData())
+    await expect(promise).rejects.toThrow()
+  })
+
   test('Should call Hasher with correct password', async () => {
-    const { sut, hasherStub } = makeSut()
+    const { sut, hasherStub, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     const hashSpy = jest.spyOn(hasherStub, 'hash')
     await sut.add(makeFakeResellerData())
     expect(hashSpy).toHaveBeenCalledWith('any_password')
   })
 
   test('Should throw if Hasher throws', async () => {
-    const { sut, hasherStub } = makeSut()
+    const { sut, hasherStub, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(Promise.reject(Error()))
     const promise = sut.add(makeFakeResellerData())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should call AddResellerRepository with correct values', async () => {
-    const { sut, addResellerRepositoryStub } = makeSut()
+    const { sut, addResellerRepositoryStub, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     const addSpy = jest.spyOn(addResellerRepositoryStub, 'add')
     await sut.add(makeFakeResellerData())
     expect(addSpy).toHaveBeenCalledWith({
@@ -79,14 +109,16 @@ describe('DbAddReseller Usecase', () => {
   })
 
   test('Should throw if AddResellerRepository throws', async () => {
-    const { sut, addResellerRepositoryStub } = makeSut()
+    const { sut, addResellerRepositoryStub, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     jest.spyOn(addResellerRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(Error()))
     const promise = sut.add(makeFakeResellerData())
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return an reseller on success', async () => {
-    const { sut } = makeSut()
+    const { sut, loadResellerByEmailRepositoryStub } = makeSut()
+    jest.spyOn(loadResellerByEmailRepositoryStub, 'loadByEmail').mockReturnValueOnce(null)
     const reseller = await sut.add(makeFakeResellerData())
     expect(reseller).toEqual(makeFakeReseller())
   })
