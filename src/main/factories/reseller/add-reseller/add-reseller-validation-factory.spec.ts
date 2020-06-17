@@ -1,5 +1,5 @@
 import { makeAddResellerValidation } from './add-reseller-validation-factory'
-import { ValidationComposite, CompareFieldsValidation, EmailValidation, RequiredFieldValidation } from '@/validation/validators'
+import { ValidationComposite, CompareFieldsValidation, EmailValidation, RequiredFieldValidation, ITRFieldValidation } from '@/validation/validators'
 import { Validation } from '@/presentation/protocols/validation'
 import { EmailValidator } from '@/validation/protocols/email-validator'
 
@@ -21,6 +21,7 @@ describe('AddResellerValidation Factory', () => {
     for (const field of ['itr', 'name', 'email', 'password', 'passwordConfirmation']) {
       validations.push(new RequiredFieldValidation(field))
     }
+    validations.push(new ITRFieldValidation('itr'))
     validations.push(new CompareFieldsValidation('password', 'passwordConfirmation'))
     validations.push(new EmailValidation('email', makeEmailValidator()))
     expect(ValidationComposite).toHaveBeenCalledWith(validations)
