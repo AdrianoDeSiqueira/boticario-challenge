@@ -1,5 +1,5 @@
 import { Middleware, HttpRequest, HttpResponse, LoadResellerByToken } from './auth-middleware-protocols'
-import { forbidden } from '@/presentation/helpers/http/http-helper'
+import { forbidden, serverError } from '@/presentation/helpers/http/http-helper'
 import { AccessDeniedError } from '@/presentation/errors'
 
 export class AuthMiddleware implements Middleware {
@@ -8,10 +8,14 @@ export class AuthMiddleware implements Middleware {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const accessToken = httpRequest.headers?.['x-access-token']
-    if (accessToken) {
-      await this.loadResellerByToken.load(accessToken)
+    try {
+      const accessToken = httpRequest.headers?.['x-access-token']
+      if (accessToken) {
+        await this.loadResellerByToken.load(accessToken)
+      }
+      return forbidden(new AccessDeniedError())
+    } catch (error) {
+      return serverError(error)
     }
-    return forbidden(new AccessDeniedError())
   }
 }
