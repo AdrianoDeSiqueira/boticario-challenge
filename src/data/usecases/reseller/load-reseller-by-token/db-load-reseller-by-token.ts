@@ -1,5 +1,4 @@
 import { LoadResellerByToken } from '@/domain/usecases/reseller/load-reseller-by-token'
-
 import { Decrypter, LoadResellerByTokenRepository, ResellerModel } from './db-load-reseller-by-token-protocols'
 
 export class DbLoadResellerByToken implements LoadResellerByToken {
