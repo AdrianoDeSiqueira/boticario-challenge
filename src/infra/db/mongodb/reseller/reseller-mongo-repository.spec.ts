@@ -92,7 +92,7 @@ describe('ResellerMongo Repository', () => {
   })
 
   describe('updateAccessToken()', () => {
-    test('Should update the account accessToken on updateAccessToken success', async () => {
+    test('Should update the reseller accessToken on updateAccessToken success', async () => {
       const sut = makeSut()
       const res = await resellerCollection.insertOne({
         itr: 'any_social_security_number',
