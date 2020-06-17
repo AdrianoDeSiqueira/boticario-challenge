@@ -26,14 +26,14 @@ describe('ResellerMongo Repository', () => {
     test('Should return an reseller on add success', async () => {
       const sut = makeSut()
       const reseller = await sut.add({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         name: 'any_name',
         email: 'any_email@mail.com',
         password: 'any_password'
       })
       expect(reseller).toBeTruthy()
       expect(reseller.id).toBeTruthy()
-      expect(reseller.itr).toBe('any_social_security_number')
+      expect(reseller.itr).toBe('99999999999')
       expect(reseller.name).toBe('any_name')
       expect(reseller.email).toBe('any_email@mail.com')
       expect(reseller.password).toBe('any_password')
@@ -44,7 +44,7 @@ describe('ResellerMongo Repository', () => {
     test('Should return an reseller on loadByEmail success', async () => {
       const sut = makeSut()
       await resellerCollection.insertOne({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         name: 'any_name',
         email: 'any_email@mail.com',
         password: 'any_password'
@@ -52,7 +52,7 @@ describe('ResellerMongo Repository', () => {
       const reseller = await sut.loadByEmail('any_email@mail.com')
       expect(reseller).toBeTruthy()
       expect(reseller.id).toBeTruthy()
-      expect(reseller.itr).toBe('any_social_security_number')
+      expect(reseller.itr).toBe('99999999999')
       expect(reseller.name).toBe('any_name')
       expect(reseller.email).toBe('any_email@mail.com')
       expect(reseller.password).toBe('any_password')
@@ -69,7 +69,7 @@ describe('ResellerMongo Repository', () => {
     test('Should return an reseller on loadById success', async () => {
       const sut = makeSut()
       const res = await resellerCollection.insertOne({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         name: 'any_name',
         email: 'any_email@mail.com',
         password: 'any_password'
@@ -78,7 +78,7 @@ describe('ResellerMongo Repository', () => {
       const reseller = await sut.loadById(fakeReseller._id)
       expect(reseller).toBeTruthy()
       expect(reseller.id).toBeTruthy()
-      expect(reseller.itr).toBe('any_social_security_number')
+      expect(reseller.itr).toBe('99999999999')
       expect(reseller.name).toBe('any_name')
       expect(reseller.email).toBe('any_email@mail.com')
       expect(reseller.password).toBe('any_password')
@@ -95,7 +95,7 @@ describe('ResellerMongo Repository', () => {
     test('Should update the reseller accessToken on updateAccessToken success', async () => {
       const sut = makeSut()
       const res = await resellerCollection.insertOne({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         name: 'any_name',
         email: 'any_email@mail.com',
         password: 'any_password'
@@ -113,7 +113,7 @@ describe('ResellerMongo Repository', () => {
     test('Should return an reseller on loadByToken', async () => {
       const sut = makeSut()
       await resellerCollection.insertOne({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         name: 'any_name',
         email: 'any_email@mail.com',
         password: 'any_password',
@@ -122,7 +122,7 @@ describe('ResellerMongo Repository', () => {
       const reseller = await sut.loadByToken('any_token')
       expect(reseller).toBeTruthy()
       expect(reseller.id).toBeTruthy()
-      expect(reseller.itr).toBe('any_social_security_number')
+      expect(reseller.itr).toBe('99999999999')
       expect(reseller.name).toBe('any_name')
       expect(reseller.email).toBe('any_email@mail.com')
       expect(reseller.password).toBe('any_password')

@@ -8,7 +8,7 @@ export class ITRFieldValidation implements Validation {
 
   validate (input: any): Error {
     // eslint-disable-next-line no-useless-escape
-    if (!/^\d{3}\.\d{3}\.\d{3}\-\d{2}$/.test(input[this.fieldName])) {
+    if (!/([0-9]{11})$/.test(input[this.fieldName])) {
       return new InvalidParamError(this.fieldName)
     }
   }

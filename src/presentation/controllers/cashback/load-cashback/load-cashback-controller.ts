@@ -8,8 +8,8 @@ export class LoadCashbackController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const { itr } = httpRequest.params
-      const cashback = await this.cashbackLoad.load(itr)
+      const { resellerItr } = httpRequest
+      const cashback = await this.cashbackLoad.load(resellerItr)
       return cashback ? ok(cashback) : noContent()
     } catch (error) {
       return serverError(error)

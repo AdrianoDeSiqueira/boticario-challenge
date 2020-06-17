@@ -28,7 +28,7 @@ describe('Order Mongo Repository', () => {
     test('Should return an order on add success', async () => {
       const sut = makeSut()
       const order = await sut.add({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         code: 'any_code',
         value: 1999.99,
         date: makeFakeDate,
@@ -37,7 +37,7 @@ describe('Order Mongo Repository', () => {
       })
       expect(order).toBeTruthy()
       expect(order.id).toBeTruthy()
-      expect(order.itr).toBe('any_social_security_number')
+      expect(order.itr).toBe('99999999999')
       expect(order.code).toBe('any_code')
       expect(order.value).toBe(1999.99)
       expect(order.date).toBe(makeFakeDate)
@@ -49,7 +49,7 @@ describe('Order Mongo Repository', () => {
   describe('loadAll()', () => {
     test('Should loadAll orders on success', async () => {
       await orderCollection.insertOne({
-        itr: 'any_social_security_number',
+        itr: '99999999999',
         code: 'any_code',
         value: 1999.99,
         date: makeFakeDate,
@@ -60,7 +60,7 @@ describe('Order Mongo Repository', () => {
       const orders = await sut.loadAll('any_reseller_id')
       expect(orders).toBeTruthy()
       expect(orders[0].id).toBeTruthy()
-      expect(orders[0].itr).toBe('any_social_security_number')
+      expect(orders[0].itr).toBe('99999999999')
       expect(orders[0].code).toBe('any_code')
       expect(orders[0].value).toBe(1999.99)
       expect(orders[0].date).toStrictEqual(makeFakeDate)

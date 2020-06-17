@@ -14,7 +14,7 @@ const makeLoadResellerByToken = (): LoadResellerByToken => {
 
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
-  itr: 'any_socual_security_number',
+  itr: '99999999999',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'
@@ -74,6 +74,6 @@ describe('Auth Middleware', () => {
   test('Should return 200 if LoadResellerByToken returns an reseller', async () => {
     const { sut } = makeSut()
     const httpResponse = await sut.handle(mockRequest())
-    expect(httpResponse).toEqual(ok({ resellerId: 'any_id' }))
+    expect(httpResponse).toEqual(ok({ resellerId: 'any_id', resellerItr: '99999999999' }))
   })
 })

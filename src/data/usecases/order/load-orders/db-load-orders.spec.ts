@@ -19,7 +19,7 @@ const makeFakeOrderModels = (): OrderModel[] => [
 
 const makeFakeOrderModel = (): OrderModel => ({
   id: 'any_id',
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
@@ -45,20 +45,20 @@ describe('DbLoadOrders Usecase', () => {
   test('Should throw if LoadOrdersRepository throws', async () => {
     const { sut, loadOrdersRepositoryStub } = makeSut()
     jest.spyOn(loadOrdersRepositoryStub, 'loadAll').mockReturnValueOnce(Promise.reject(Error()))
-    const promise = sut.load()
+    const promise = sut.load('any_reseller_id')
     await expect(promise).rejects.toThrow()
   })
 
   test('Should return null if LoadOrdersRepository returns null', async () => {
     const { sut, loadOrdersRepositoryStub } = makeSut()
     jest.spyOn(loadOrdersRepositoryStub, 'loadAll').mockReturnValueOnce(null)
-    const result = await sut.load()
+    const result = await sut.load('any_reseller_id')
     expect(result).toBeNull()
   })
 
   test('Should return a orders on success', async () => {
     const { sut } = makeSut()
-    const orders = await sut.load()
+    const orders = await sut.load('any_reseller_id')
     expect(orders).toEqual(makeFakeOrderModels())
   })
 })

@@ -17,7 +17,7 @@ describe('ITRField Validation', () => {
 
   test('Should not return if validation succeeds', () => {
     const sut = makeSut()
-    const error = sut.validate({ [field]: '341.273.118-86' })
+    const error = sut.validate({ [field]: '99999999999' })
     expect(error).toBeFalsy()
   })
 })

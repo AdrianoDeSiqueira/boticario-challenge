@@ -10,7 +10,7 @@ let resellerCollection: Collection
 
 const makeAccessToken = async (): Promise<string> => {
   const res = await resellerCollection.insertOne({
-    itr: '341.273.118-86',
+    itr: '99999999999',
     name: 'Adriano Nunes de Siqueira',
     email: 'adriano.siqueira@grupoboticario.com.br',
     password: 'Boticario2020'
@@ -43,11 +43,11 @@ describe('Cashback Routes', () => {
     await resellerCollection.deleteMany({})
   })
 
-  describe('GET /cashback/:itr', () => {
+  describe('GET /cashback', () => {
     test('Should return 200 on load cashback', async () => {
       const accessToken = await makeAccessToken()
       await request(app)
-        .get('/api/cashback/12312312323')
+        .get('/api/cashback')
         .set('x-access-token', accessToken)
         .expect(200)
     })

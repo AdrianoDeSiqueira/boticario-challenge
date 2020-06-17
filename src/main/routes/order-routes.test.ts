@@ -15,7 +15,7 @@ interface SutTypes {
 
 const makeAccessToken = async (): Promise<SutTypes> => {
   const res = await resellerCollection.insertOne({
-    itr: '341.273.118-86',
+    itr: '99999999999',
     name: 'Adriano Nunes de Siqueira',
     email: 'adriano.siqueira@grupoboticario.com.br',
     password: 'Boticario2020'
@@ -58,7 +58,7 @@ describe('Order Routes', () => {
         .post('/api/order')
         .set('x-access-token', accessToken)
         .send({
-          itr: '527.378.250-32',
+          itr: '99999999999',
           value: 1999.99,
           code: 'N9TT-9G0A-B7FQ-RANC',
           date: '2020/06/13'
@@ -72,7 +72,7 @@ describe('Order Routes', () => {
         .post('/api/order')
         .set('x-access-token', accessToken)
         .send({
-          itr: '527.378.250-32',
+          itr: '99999999999',
           value: 1999.99,
           date: new Date()
         })
@@ -84,7 +84,7 @@ describe('Order Routes', () => {
     test('Should return 200 on load orders', async () => {
       const { accessToken, id } = await makeAccessToken()
       await orderCollection.insertOne({
-        itr: '527.378.250-32',
+        itr: '99999999999',
         code: 'N9TT-9G0A-B7FQ-RANC',
         value: 1999.99,
         date: '2020/06/13',

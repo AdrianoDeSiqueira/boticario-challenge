@@ -14,9 +14,7 @@ const makeLoadCashback = (): LoadCashback => {
 }
 
 const makeFakeRequest = (): HttpRequest => ({
-  params: {
-    itr: '12312312323'
-  }
+  resellerItr: '99999999999'
 })
 
 const makeFakeCashbackModel = (): CashbackModel => ({
@@ -43,7 +41,7 @@ describe('LoadCashback Controller', () => {
     const loadSpy = jest.spyOn(loadCashbackStub, 'load')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(loadSpy).toHaveBeenCalledWith(httpRequest.params.itr)
+    expect(loadSpy).toHaveBeenCalledWith(httpRequest.resellerItr)
   })
 
   test('Should return 500 if LoadCashback throws', async () => {

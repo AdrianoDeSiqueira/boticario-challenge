@@ -25,7 +25,7 @@ const makeAddOrder = (): AddOrder => {
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    itr: 'any_social_security_number',
+    itr: '99999999999',
     code: 'any_code',
     value: 1999.99,
     date: makeFakeDate
@@ -35,7 +35,7 @@ const makeFakeRequest = (): HttpRequest => ({
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,

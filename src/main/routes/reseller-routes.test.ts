@@ -24,7 +24,7 @@ describe('Reseller Routes', () => {
     test('Should return 200 on login', async () => {
       const password = await hash('Boticario2020', 12)
       await resellerCollection.insertOne({
-        itr: '341.273.118-86',
+        itr: '99999999999',
         name: 'Adriano Nunes de Siqueira',
         email: 'adriano.siqueira@grupoboticario.com.br',
         password
@@ -54,7 +54,7 @@ describe('Reseller Routes', () => {
       await request(app)
         .post('/api/reseller')
         .send({
-          itr: '341.273.118-86',
+          itr: '99999999999',
           name: 'Adriano Nunes de Siqueira',
           email: 'adriano.siqueira@grupoboticario.com.br',
           password: 'Boticario2020',

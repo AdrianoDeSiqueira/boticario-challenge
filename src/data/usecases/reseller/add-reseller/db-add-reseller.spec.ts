@@ -30,7 +30,7 @@ const makeLoadResellerByEmailRepository = (): LoadResellerByEmailRepository => {
 }
 
 const makeFakeResellerData = (): AddResellerModel => ({
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'any_password'
@@ -38,7 +38,7 @@ const makeFakeResellerData = (): AddResellerModel => ({
 
 const makeFakeReseller = (): ResellerModel => ({
   id: 'any_id',
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   name: 'any_name',
   email: 'any_email@mail.com',
   password: 'hashed_password'
@@ -101,7 +101,7 @@ describe('DbAddReseller Usecase', () => {
     const addSpy = jest.spyOn(addResellerRepositoryStub, 'add')
     await sut.add(makeFakeResellerData())
     expect(addSpy).toHaveBeenCalledWith({
-      itr: 'any_social_security_number',
+      itr: '99999999999',
       name: 'any_name',
       email: 'any_email@mail.com',
       password: 'any_password_hashed'

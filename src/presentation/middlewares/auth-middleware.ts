@@ -13,7 +13,7 @@ export class AuthMiddleware implements Middleware {
       if (accessToken) {
         const reseller = await this.loadResellerByToken.load(accessToken)
         if (reseller) {
-          return ok({ resellerId: reseller.id })
+          return ok({ resellerId: reseller.id, resellerItr: reseller.itr })
         }
       }
       return forbidden(new AccessDeniedError())

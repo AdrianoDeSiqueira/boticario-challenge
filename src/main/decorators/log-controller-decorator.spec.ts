@@ -24,7 +24,7 @@ const makeLogErrorRepository = (): LogErrorRepository => {
 
 const makeFakeReseller = (): ResellerModel => ({
   id: 'valid_id',
-  itr: 'valid_social_security_number',
+  itr: '99999999999',
   name: 'valid_name',
   email: 'valid_email@mail.com',
   password: 'valid_password'
@@ -32,7 +32,7 @@ const makeFakeReseller = (): ResellerModel => ({
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
-    itr: 'any_social_security_number',
+    itr: '99999999999',
     name: 'any_name',
     email: 'any_email@mail.com',
     password: 'any_password',

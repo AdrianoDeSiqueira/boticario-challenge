@@ -34,7 +34,7 @@ const makeAddOrderRepository = (): AddOrderRepository => {
 }
 
 const makeFakeOrderData = (): AddOrderModel => ({
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
@@ -43,7 +43,7 @@ const makeFakeOrderData = (): AddOrderModel => ({
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
-  itr: 'any_social_security_number',
+  itr: '99999999999',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
@@ -78,7 +78,7 @@ describe('DbAddOrder Usecase', () => {
     const { sut, statusStub } = makeSut()
     const getSpy = jest.spyOn(statusStub, 'get')
     await sut.add(makeFakeOrderData())
-    expect(getSpy).toHaveBeenCalledWith('any_social_security_number')
+    expect(getSpy).toHaveBeenCalledWith('99999999999')
   })
 
   test('Should throw if Status throws', async () => {
