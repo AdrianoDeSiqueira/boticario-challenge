@@ -1,6 +1,7 @@
 import { HttpRequest, HttpResponse, Controller, Validation } from './add-reseller-controller-protocols'
-import { badRequest, serverError, created } from '@/presentation/helpers/http/http-helper'
+import { badRequest, forbidden, serverError, created } from '@/presentation/helpers/http/http-helper'
 import { AddReseller } from '@/domain/usecases/reseller/add-reseller'
+import { EmailInUseError } from '@/presentation/errors'
 
 export class AddResellerController implements Controller {
   constructor (
@@ -21,6 +22,9 @@ export class AddResellerController implements Controller {
         email,
         password
       })
+      if (!reseller) {
+        return forbidden(new EmailInUseError())
+      }
       return created(reseller)
     } catch (error) {
       return serverError(error)
