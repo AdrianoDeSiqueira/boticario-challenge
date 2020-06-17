@@ -19,10 +19,11 @@ const makeFakeOrderModels = (): OrderModel[] => [
 
 const makeFakeOrderModel = (): OrderModel => ({
   id: 'any_id',
+  itr: 'any_social_security_number',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
-  itr: 'any_social_security_number',
+  resellerId: 'any_reseller_id',
   status: 'any_status'
 })
 

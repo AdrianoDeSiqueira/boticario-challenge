@@ -34,18 +34,20 @@ const makeAddOrderRepository = (): AddOrderRepository => {
 }
 
 const makeFakeOrderData = (): AddOrderModel => ({
+  itr: 'any_social_security_number',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
-  itr: 'any_social_security_number'
+  resellerId: 'any_reseller_id'
 })
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
+  itr: 'any_social_security_number',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
-  itr: 'any_social_security_number',
+  resellerId: 'any_reseller_id',
   cashbackPerc: 10,
   cashbackValue: 100,
   status: 'any_status'

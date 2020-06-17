@@ -11,9 +11,10 @@ export class OrderMongoRepository implements AddOrderRepository, LoadOrdersRepos
     return MongoHelper.map(result.ops[0])
   }
 
-  async loadAll (): Promise<OrderModel[]> {
+  async loadAll (resellerId: string): Promise<OrderModel[]> {
     const orderCollection = await MongoHelper.getCollection('orders')
     const orders = await orderCollection.aggregate([
+      { $match: { resellerId: resellerId } },
       { $sort: { date: -1 } }
     ]).toArray()
     return MongoHelper.mapCollection(orders)

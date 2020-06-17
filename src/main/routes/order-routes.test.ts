@@ -8,7 +8,12 @@ import { Collection } from 'mongodb'
 let orderCollection: Collection
 let resellerCollection: Collection
 
-const makeAccessToken = async (): Promise<string> => {
+interface SutTypes {
+  accessToken: string
+  id: string
+}
+
+const makeAccessToken = async (): Promise<SutTypes> => {
   const res = await resellerCollection.insertOne({
     itr: '341.273.118-86',
     name: 'Adriano Nunes de Siqueira',
@@ -24,7 +29,10 @@ const makeAccessToken = async (): Promise<string> => {
       accessToken
     }
   })
-  return accessToken
+  return {
+    accessToken,
+    id
+  }
 }
 
 describe('Order Routes', () => {
@@ -45,44 +53,44 @@ describe('Order Routes', () => {
 
   describe('POST /order', () => {
     test('Should return 201 on add order', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .post('/api/order')
         .set('x-access-token', accessToken)
         .send({
-          code: '1234567890',
-          value: '1234,70',
-          date: '2020/06/13',
-          itr: '26977287080'
+          itr: '527.378.250-32',
+          value: 1999.99,
+          code: 'N9TT-9G0A-B7FQ-RANC',
+          date: '2020/06/13'
         })
         .expect(201)
     })
 
     test('Should return 400 on add order', async () => {
-      const accessToken = await makeAccessToken()
+      const { accessToken } = await makeAccessToken()
       await request(app)
         .post('/api/order')
         .set('x-access-token', accessToken)
         .send({
+          itr: '527.378.250-32',
           value: 1999.99,
-          date: new Date(),
-          itr: '326977287080'
+          date: new Date()
         })
         .expect(400)
     })
   })
 
-  describe('POST /get', () => {
+  describe('GET /order', () => {
     test('Should return 200 on load orders', async () => {
+      const { accessToken, id } = await makeAccessToken()
       await orderCollection.insertOne({
-        id: 'any_id',
-        code: 'any_code',
+        itr: '527.378.250-32',
+        code: 'N9TT-9G0A-B7FQ-RANC',
         value: 1999.99,
-        date: new Date(),
-        itr: 'any_social_security_number',
+        date: '2020/06/13',
+        resellerId: id,
         status: 'any_status'
       })
-      const accessToken = await makeAccessToken()
       await request(app)
         .get('/api/order')
         .set('x-access-token', accessToken)
@@ -91,7 +99,7 @@ describe('Order Routes', () => {
   })
 
   test('Should return 204 on load orders', async () => {
-    const accessToken = await makeAccessToken()
+    const { accessToken } = await makeAccessToken()
     await request(app)
       .get('/api/order')
       .set('x-access-token', accessToken)

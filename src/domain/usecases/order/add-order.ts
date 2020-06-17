@@ -1,10 +1,11 @@
 import { OrderModel } from '@/domain/models/order'
 
 export interface AddOrderModel {
+  itr: string
   code: string
   value: number
   date: Date
-  itr: string
+  resellerId: string
   cashbackPerc?: number
   cashbackValue?: number
   status?: string

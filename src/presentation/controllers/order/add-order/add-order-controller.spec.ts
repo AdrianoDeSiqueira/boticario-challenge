@@ -25,19 +25,21 @@ const makeAddOrder = (): AddOrder => {
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
+    itr: 'any_social_security_number',
     code: 'any_code',
     value: 1999.99,
-    date: makeFakeDate,
-    itr: 'any_social_security_number'
-  }
+    date: makeFakeDate
+  },
+  resellerId: 'any_reseller_id'
 })
 
 const makeFakeOrder = (): OrderModel => ({
   id: 'any_id',
+  itr: 'any_social_security_number',
   code: 'any_code',
   value: 1999.99,
   date: makeFakeDate,
-  itr: 'any_social_security_number',
+  resellerId: 'any_reseller_id',
   status: 'any_status'
 })
 
@@ -79,7 +81,7 @@ describe('AddOrder Controller', () => {
     const addSpy = jest.spyOn(addOrderStub, 'add')
     const httpRequest = makeFakeRequest()
     await sut.handle(httpRequest)
-    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
+    expect(addSpy).toHaveBeenCalledWith(Object.assign({}, httpRequest.body, { resellerId: httpRequest.resellerId }))
   })
 
   test('Should return 500 if AddOrder throws', async () => {

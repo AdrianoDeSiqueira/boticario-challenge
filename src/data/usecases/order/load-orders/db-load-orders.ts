@@ -5,8 +5,8 @@ export class DbLoadOrders implements LoadOrders {
     private readonly loadOrdersRepository: LoadOrdersRepository
   ) {}
 
-  async load (): Promise<OrderModel[]> {
-    const orders = await this.loadOrdersRepository.loadAll()
+  async load (resellerId: string): Promise<OrderModel[]> {
+    const orders = await this.loadOrdersRepository.loadAll(resellerId)
     return orders
   }
 }
