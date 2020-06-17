@@ -127,5 +127,11 @@ describe('ResellerMongo Repository', () => {
       expect(reseller.email).toBe('any_email@mail.com')
       expect(reseller.password).toBe('any_password')
     })
+
+    test('Should return null if loadByToken fails', async () => {
+      const sut = makeSut()
+      const reseller = await sut.loadByToken('any_token')
+      expect(reseller).toBeFalsy()
+    })
   })
 })
