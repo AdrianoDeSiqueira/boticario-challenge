@@ -9,8 +9,13 @@ export class DbLoadResellerByToken implements LoadResellerByToken {
   ) {}
 
   async load (accessToken: string): Promise<ResellerModel> {
-    await this.decrypter.decrypt(accessToken)
-    await this.loadResellerByTokenRepository.loadByToken(accessToken)
-    return Promise.resolve(null)
+    const token = await this.decrypter.decrypt(accessToken)
+    if (token) {
+      const reseller = await this.loadResellerByTokenRepository.loadByToken(accessToken)
+      if (reseller) {
+        return reseller
+      }
+    }
+    return null
   }
 }
