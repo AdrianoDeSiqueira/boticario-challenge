@@ -5,5 +5,7 @@ export interface HttpResponse {
 
 export interface HttpRequest {
   body?: any
-  query?: any
+  headers?: any
+  params?: any
+  resellerId?: string
 }
